@@ -37,7 +37,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </CheckBox>
-                              <Button fx:id="findByIDButton" layoutX="202.0" layoutY="608.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="70.0" text="FIND" />
+                              <Button fx:id="findByIDButton" layoutX="202.0" layoutY="608.0" mnemonicParsing="false" onAction="#searchByID" prefHeight="31.0" prefWidth="70.0" text="FIND" />
                               <Label layoutX="115.0" layoutY="567.0" text="Find by Product's ID">
                                  <font>
                                     <Font size="18.0" />
@@ -45,8 +45,8 @@
                               </Label>
                               <TextField fx:id="idField" layoutX="119.0" layoutY="608.0" prefHeight="31.0" prefWidth="70.0" />
                               <Button fx:id="showDescriptionButton" layoutX="91.0" layoutY="738.0" mnemonicParsing="false" text="Show description of product" />
-                              <Button fx:id="searchProductsButton" layoutX="125.0" layoutY="375.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="150.0" text="SEARCH" />
-                              <Button fx:id="clearFiltersButton" layoutX="150.0" layoutY="479.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="100.0" text="Clear filters" />
+                              <Button fx:id="searchProductsButton" layoutX="125.0" layoutY="375.0" mnemonicParsing="false" onAction="#ProductFilter" prefHeight="51.0" prefWidth="150.0" text="SEARCH" />
+                              <Button fx:id="clearFiltersButton" layoutX="150.0" layoutY="479.0" mnemonicParsing="false" onAction="#clearFilters" prefHeight="31.0" prefWidth="100.0" text="Clear filters" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

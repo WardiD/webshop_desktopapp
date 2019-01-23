@@ -1,21 +1,15 @@
 package Customer;
 
-import Loginapp.LoginController;
+import NewCustomer.CheckingFormulas;
 import Product.GeneralProduct;
 import connectors.Database;
-import connectors.SSH;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,12 +37,7 @@ public class CustomerController implements Initializable {
 
     @FXML
     private TableView<GeneralProduct> productTable;
-    /*
-    @FXML
-    private TableColumn<GeneralProduct, String> productNameColumn;
-    @FXML
-    private TableColumn<GeneralProduct, Integer> productIDColumn;
-    */
+
     @FXML
     private TableColumn<GeneralProduct, String> productTypeColumn, productNameColumn;
     @FXML
@@ -60,6 +49,21 @@ public class CustomerController implements Initializable {
     TextField quantityField;
     @FXML
     Button addToCartButton;
+
+    @FXML
+    private Button searchProductsButton;
+
+    @FXML
+    private CheckBox isAvailableCheckBox;
+
+    @FXML
+    private CheckBox inBudgetCheckBox;
+
+    @FXML
+    private Button findByIDButton;
+
+    @FXML
+    private TextField idField;
 
     // Cart
 
@@ -100,6 +104,8 @@ public class CustomerController implements Initializable {
 
             quantityField.setDisable(true);
             addToCartButton.setDisable(true);
+
+            inBudgetCheckBox.setDisable(true);
         } else {
             customer = new Customer(id);
             showUserInformation();
@@ -115,7 +121,7 @@ public class CustomerController implements Initializable {
             System.out.println("GeneralProduct type combo box = wybrano : "+selected);
         }));
         // adding data to product table
-        fillproductTable();
+        fillProductTable();
 
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
         productIDColumn.setCellValueFactory(new PropertyValueFactory<>("id_product"));
@@ -124,10 +130,6 @@ public class CustomerController implements Initializable {
         productQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
 
         //
-
-
-
-
     }
 
 
@@ -155,10 +157,45 @@ public class CustomerController implements Initializable {
     }
 
 
-    private void fillproductTable(){
-        // ZMIENIC NA WIDOK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type";
+    private void fillProductTable(){
 
+        String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type";
+        // [EDYCJA]
+        // ZMIENIC NA WIDOK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        boolean isFilter = false;
+
+        String type = productTypeComboBox.getSelectionModel().getSelectedItem();
+
+        if( !type.equals("All")){
+            sqlQuery += " WHERE t.type_name= \'"+type+"\'";
+            isFilter = true;
+        }
+
+        if(isAvailableCheckBox.isSelected()){
+            if(!isFilter)
+                sqlQuery += " WHERE";
+            else
+                sqlQuery += " AND";
+            sqlQuery += " p.quantity_store > 0";
+        }
+
+        if(inBudgetCheckBox.isSelected()){
+            if(!isFilter)
+                sqlQuery += " WHERE";
+            else
+                sqlQuery += " AND";
+            sqlQuery += " p.price < "+ customer.client.getMoney();
+        }
+
+        showProductTable(sqlQuery);
+
+
+    }
+
+
+    public void showProductTable(String sqlQuery){
+        System.out.println(sqlQuery);
         try{
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
             ResultSet result = preparedStatement.executeQuery();
@@ -176,11 +213,49 @@ public class CustomerController implements Initializable {
 
         }catch (SQLException ex){
             ex.printStackTrace();
+
         }
-
-
     }
 
+
+    public void ProductFilter(){
+        productTable.getItems().clear();
+        fillProductTable();
+    }
+
+    public void clearFilters(){
+        productTypeComboBox.getSelectionModel().selectFirst();
+        isAvailableCheckBox.setSelected(false);
+        inBudgetCheckBox.setSelected(false);
+        fillProductTable();
+    }
+
+    public void searchByID(){
+        String errorInfo = null;
+        System.out.println(idField.getText());
+        if(idField.getText().isEmpty()){
+            errorInfo = "ID field is empty!";
+            System.out.println("empty");
+        } else if(!CheckingFormulas.checkOnlyDigits(idField.getText())){
+            errorInfo = "ID field gets only digits!";
+            System.out.println("not digits");
+        }
+
+        if(errorInfo != null){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Wrong value!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText(errorInfo);
+
+            errorAlert.showAndWait();
+        } else {
+            System.out.println("search by id -----");
+            String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type" +
+                    " WHERE p.id_product = "+Integer.parseInt(idField.getText());
+            productTable.getItems().clear();
+            showProductTable(sqlQuery);
+        }
+    }
 
 
 // ------------------------------- CART ------------------------------------

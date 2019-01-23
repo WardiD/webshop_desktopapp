@@ -20,7 +20,6 @@ public class Database{
 			Class.forName(driverName).newInstance();
 			connection = DriverManager.getConnection (url, databaseUserName, databasePassword);
 			System.out.println("Database connection established");
-			System.out.println("DATABASE DONE");
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}

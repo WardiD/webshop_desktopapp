@@ -26,7 +26,7 @@ public class SSH{
             SSH.session.setPassword(sshPassword);
             SSH.session.setConfig(config);
             SSH.session.connect();
-            System.out.println("Connected");
+            System.out.println("SSH Connected");
             int assinged_port=SSH.session.setPortForwardingL(lport, rhost, rport);
             System.out.println("localhost:"+assinged_port+" -> "+rhost+":"+rport);
             System.out.println("Port Forwarded");

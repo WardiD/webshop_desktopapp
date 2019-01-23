@@ -2,13 +2,17 @@ package Customer;
 
 import NewCustomer.CheckingFormulas;
 import Product.GeneralProduct;
+import connectors.Close;
 import connectors.Database;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -21,6 +25,8 @@ public class CustomerController implements Initializable {
     private Customer customer;
     //
     //
+    @FXML
+    AnchorPane ap;
     // Tabs
     @FXML
     Tab catalogTab;
@@ -129,7 +135,18 @@ public class CustomerController implements Initializable {
         productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
         productQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
 
-        //
+        // onCloseRequest
+        ap.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            Platform.runLater(() -> {
+                Stage stage = (Stage) newScene.getWindow();
+                stage.setOnCloseRequest(e -> {
+                    Close.closeProgram();
+                    //Platform.exit();
+                    //System.exit(0);
+                });
+            });
+        });
+
     }
 
 

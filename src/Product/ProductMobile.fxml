@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Product.ProductMobileController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.ProductMobileController">
+   <children>
+      <Label fx:id="mobileNameLabel" alignment="CENTER" layoutX="66.0" layoutY="20.0" prefHeight="21.0" prefWidth="318.0" textAlignment="CENTER">
+         <font>
+            <Font name="Times New Roman" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="70.0" text="Brand :" />
+      <Label layoutX="15.0" layoutY="110.0" text="Model :" />
+      <Label layoutX="15.0" layoutY="150.0" text="CPU cores :" />
+      <Label layoutX="15.0" layoutY="190.0" text="CPU speed :" />
+      <Label layoutX="15.0" layoutY="230.0" text="Screen size :" />
+      <Label layoutX="15.0" layoutY="310.0" text="Camera - front :" />
+      <Label layoutX="15.0" layoutY="350.0" text="Camera - back :" />
+      <Label layoutX="15.0" layoutY="390.0" text="Internal memory :" />
+      <Label layoutX="15.0" layoutY="430.0" text="External memory :" />
+      <Label layoutX="15.0" layoutY="470.0" text="Fingerprint reader :" />
+      <Label layoutX="260.0" layoutY="510.0" text="Price :">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="mobilePriceLabel" layoutX="336.0" layoutY="480.0" prefHeight="27.0" prefWidth="75.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="mobileFingerprintLabel" layoutX="160.0" layoutY="430.0" />
+      <Label fx:id="mobileExternalLabel" layoutX="160.0" layoutY="390.0" />
+      <Label fx:id="mobileInternalLabel" layoutX="160.0" layoutY="350.0" />
+      <Label fx:id="mobileCameraBackLabel" layoutX="160.0" layoutY="310.0" />
+      <Label fx:id="mobileCameraFrontLabel" layoutX="160.0" layoutY="270.0" />
+      <Label fx:id="mobileSizeLabel" layoutX="160.0" layoutY="230.0" />
+      <Label fx:id="mobileCPUSpeedLabel" layoutX="160.0" layoutY="190.0" />
+      <Label fx:id="mobileCPUCoresLabel" layoutX="160.0" layoutY="150.0" />
+      <Label fx:id="mobileModelLabel" layoutX="160.0" layoutY="110.0" />
+      <Label fx:id="mobileBrandLabel" layoutX="160.0" layoutY="70.0" />
+      <Label layoutX="15.0" layoutY="270.0" text="Resolution : " />
+      <Label fx:id="mobileResolutionLabel" layoutX="160.0" layoutY="270.0" />
+   </children>
 </AnchorPane>

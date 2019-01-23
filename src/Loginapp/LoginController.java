@@ -3,6 +3,7 @@ package Loginapp;
 import Customer.CustomerController;
 import NewCustomer.NewCustomerController;
 import Worker.WorkerController;
+import connectors.Close;
 import connectors.Database;
 
 import javafx.event.ActionEvent;
@@ -71,7 +72,7 @@ public class LoginController implements Initializable {
     public void loginAsWorker(ActionEvent event){
         try{
             if(this.loginModel.isLoginWorker(this.adminUsernameField.getText(),this.adminPasswordField.getText())){
-                System.out.println("login as worker - true");
+                System.out.println("login as admin");
                 Stage stage = (Stage)this.loginButton.getScene().getWindow();
                 stage.close();
                 workerLogin();
@@ -143,6 +144,7 @@ public class LoginController implements Initializable {
             customerStage.setTitle("Account : "+this.emailField.getText());
             customerStage.setResizable(false);
 
+
             customerStage.show();
         } catch (IOException ex){
             ex.printStackTrace();
@@ -161,6 +163,7 @@ public class LoginController implements Initializable {
             workerStage.setScene(scene);
             workerStage.setTitle("logged as: "+adminUsernameField.getText());
             workerStage.setResizable(false);
+
             workerStage.show();
         } catch (IOException ex){
             ex.printStackTrace();
@@ -190,14 +193,9 @@ public class LoginController implements Initializable {
         String sqlQuery = "SELECT cl.id_client FROM Client cl, Contact co WHERE co.email = ? AND co.id_contact = cl.id_contact";
 
         try {
-            System.out.println(1);
             preparedStatement = Database.connection.prepareStatement(sqlQuery);
-            System.out.println(2);
             preparedStatement.setString(1,email);
-            System.out.println(3);
             ResultSet result = preparedStatement.executeQuery();
-            System.out.println(result.next());
-            System.out.println(result.getInt(1));
             System.out.println("findIDByEmail: email = "+email+", id = "+result.getInt(1));
 
             return result.getInt(1);

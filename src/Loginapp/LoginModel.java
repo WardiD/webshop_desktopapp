@@ -60,7 +60,6 @@ public class LoginModel {
             if(result.next()){
                 return true;
             }
-            System.out.println("cos poszlo nie tak w znalezieniu danego admina");
             return false;
 
         } catch (SQLException ex){

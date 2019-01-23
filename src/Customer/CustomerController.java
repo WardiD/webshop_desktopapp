@@ -1,6 +1,7 @@
 package Customer;
 
 import Loginapp.LoginController;
+import Product.GeneralProduct;
 import connectors.Database;
 import connectors.SSH;
 import javafx.application.Platform;
@@ -10,9 +11,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +42,19 @@ public class CustomerController implements Initializable {
     private ComboBox<String> productTypeComboBox;
 
     @FXML
-    private
+    private TableView<GeneralProduct> productTable;
+    /*
+    @FXML
+    private TableColumn<GeneralProduct, String> productNameColumn;
+    @FXML
+    private TableColumn<GeneralProduct, Integer> productIDColumn;
+    */
+    @FXML
+    private TableColumn<GeneralProduct, String> productTypeColumn, productNameColumn;
+    @FXML
+    private TableColumn<GeneralProduct, Double> productPriceColumn;
+    @FXML
+    private TableColumn<GeneralProduct, Integer> productQuantityColumn, productIDColumn;
 
     @FXML
     TextField quantityField;
@@ -91,7 +106,7 @@ public class CustomerController implements Initializable {
         }
 
         // CATALOG
-        // adding data to product tye combobox
+        // adding data to product type combobox
 
         productTypeComboBox.setItems(makeProductTypeData());
         productTypeComboBox.getSelectionModel().selectFirst();
@@ -99,7 +114,14 @@ public class CustomerController implements Initializable {
             String selected = productTypeComboBox.getSelectionModel().getSelectedItem();
             System.out.println("GeneralProduct type combo box = wybrano : "+selected);
         }));
-        //
+        // adding data to product table
+        fillproductTable();
+
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        productIDColumn.setCellValueFactory(new PropertyValueFactory<>("id_product"));
+        productTypeColumn.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        productQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
 
         //
 
@@ -132,11 +154,35 @@ public class CustomerController implements Initializable {
         return null;
     }
 
-    /*
-    private showCatalog(){
+
+    private void fillproductTable(){
+        // ZMIENIC NA WIDOK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type";
+
+        try{
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            ResultSet result = preparedStatement.executeQuery();
+            while(result.next()){
+                GeneralProduct product = new GeneralProduct(
+                        result.getString(1), // name
+                        result.getInt(2), // id_product
+                        result.getString(3), // type name
+                        result.getDouble(4), // price
+                        result.getInt(5) // quantity
+                );
+                System.out.println(product);
+                productTable.getItems().add(product);
+            }
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
 
     }
-    */
+
+
+
 // ------------------------------- CART ------------------------------------
 
 

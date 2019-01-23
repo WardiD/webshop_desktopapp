@@ -57,13 +57,11 @@
                                        <children>
                                           <TableView fx:id="productTable" prefHeight="2000.0" prefWidth="1173.0">
                                             <columns>
-                                              <TableColumn fx:id="productNameColumn" prefWidth="300.0" resizable="false" text="Product name" />
-                                              <TableColumn fx:id="productIDColumn" minWidth="0.0" prefWidth="139.0" resizable="false" text="Product's ID" />
-                                                <TableColumn fx:id="productTypeColumn" minWidth="0.0" prefWidth="171.0" resizable="false" text="Type" />
-                                                <TableColumn fx:id="productBrandColumn" minWidth="0.0" prefWidth="174.0" resizable="false" text="Brand" />
-                                                <TableColumn fx:id="productModelColumn" minWidth="0.0" prefWidth="189.0" resizable="false" text="Model" />
-                                                <TableColumn fx:id="productPriceColumn" minWidth="0.0" prefWidth="94.0" resizable="false" text="Price" />
-                                                <TableColumn fx:id="productQuantityColumn" minWidth="0.0" prefWidth="107.0" resizable="false" text="Quantity" />
+                                              <TableColumn fx:id="productNameColumn" prefWidth="662.0" resizable="false" text="Product name" />
+                                              <TableColumn fx:id="productIDColumn" minWidth="0.0" prefWidth="111.0" resizable="false" text="Product's ID" />
+                                                <TableColumn fx:id="productTypeColumn" minWidth="0.0" prefWidth="190.0" resizable="false" text="Type" />
+                                                <TableColumn fx:id="productPriceColumn" minWidth="0.0" prefWidth="105.0" resizable="false" text="Price" />
+                                                <TableColumn fx:id="productQuantityColumn" minWidth="0.0" prefWidth="104.0" resizable="false" text="Quantity" />
                                             </columns>
                                           </TableView>
                                        </children>

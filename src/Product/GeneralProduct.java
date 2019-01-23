@@ -9,14 +9,25 @@ public class GeneralProduct {
     private double price;
     private int quantity;
 
-    public GeneralProduct(String name, int id_product, String type, String brand, String model, double price, int quantity) {
+    public GeneralProduct(String name, int id_product, String type, double price, int quantity) {
         this.name = name;
         this.id_product = id_product;
         this.type = type;
-        this.brand = brand;
-        this.model = model;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "GeneralProduct{" +
+                "name='" + name + '\'' +
+                ", id_product=" + id_product +
+                ", type='" + type + '\'' +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 
     // Setters
@@ -30,14 +41,6 @@ public class GeneralProduct {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 
     public void setPrice(double price) {
@@ -60,14 +63,6 @@ public class GeneralProduct {
 
     public String getType() {
         return type;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
     }
 
     public double getPrice() {

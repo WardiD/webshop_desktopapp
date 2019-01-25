@@ -16,49 +16,12 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class WorkerController implements Initializable {
-    public static int id_product;
+
 
     @FXML
     private AnchorPane ap;
 
-    @FXML
-    private Label mobileNameLabel;
 
-    @FXML
-    private Label mobileBrandLabel;
-
-    @FXML
-    private Label mobileModelLabel;
-
-    @FXML
-    private Label mobileCPUCoresLabel;
-
-    @FXML
-    private Label mobileCPUSpeedLabel;
-
-    @FXML
-    private Label mobileSizeLabel;
-
-    @FXML
-    private Label mobileResolutionLabel;
-
-    @FXML
-    private Label mobileCameraFrontLabel;
-
-    @FXML
-    private Label mobileCameraBackLabel;
-
-    @FXML
-    private Label mobileInternalLabel;
-
-    @FXML
-    private Label mobileExternalLabel;
-
-    @FXML
-    private Label mobileFingerprintLabel;
-
-    @FXML
-    private Label mobilePriceLabel;
 
 // INIT
     @Override
@@ -80,35 +43,7 @@ public class WorkerController implements Initializable {
     }
 
 
-    public void showDescription(){
-        // [EDYCJA]
-        String sqlQuery = "SELECT * FROM description_mobile d JOIN resolution r ON d.id_resolution=r.id_resolution WHERE d.id_product = ?";
-        try{
-            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
-            preparedStatement.setInt(1, id_product);
 
-            ResultSet result = preparedStatement.executeQuery();
-
-            if(result.next()) {
-                mobileNameLabel.setText();
-                mobileBrandLabel;
-                mobileModelLabel;
-                mobileCPUCoresLabel;
-                mobileCPUSpeedLabel;
-                mobileSizeLabel;
-                mobileCameraFrontLabel;
-                mobileCameraBackLabel;
-                mobileInternalLabel;
-                mobileExternalLabel;
-                mobileFingerprintLabel;
-                mobilePriceLabel;
-            }
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-
-
-    }
 
 
 

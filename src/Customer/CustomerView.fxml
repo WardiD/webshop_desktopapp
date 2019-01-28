@@ -76,7 +76,28 @@
             </Tab>
             <Tab fx:id="cartTab" text="Shopping Cart">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="344.0" layoutY="84.0" prefHeight="577.0" prefWidth="912.0">
+                          <columns>
+                            <TableColumn prefWidth="593.0" text="Product name" />
+                              <TableColumn minWidth="0.0" prefWidth="137.0" text="Quantity" />
+                              <TableColumn minWidth="0.0" prefWidth="181.0" text="Price" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="981.0" layoutY="674.0" text="PRICE : ">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="cartPriceLabel" layoutX="1101.0" layoutY="674.0" prefHeight="53.0" prefWidth="155.0">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="411.0" layoutY="680.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="122.0" text="Delete" />
+                        <Button layoutX="690.0" layoutY="765.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="221.0" text="Make order!" />
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab fx:id="ordersTab" text="User's Orderds">

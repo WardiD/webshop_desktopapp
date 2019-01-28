@@ -60,7 +60,7 @@ public class ProductMobileController implements Initializable {
     }
 
     public void showDescription(){
-        String sqlQuery = "SELECT * FROM mobiledescriptionview WHERE d.id_product = ?";
+        String sqlQuery = "SELECT * FROM mobileproductview d WHERE d.id_product = ?";
         try{
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
             preparedStatement.setInt(1, id_product);

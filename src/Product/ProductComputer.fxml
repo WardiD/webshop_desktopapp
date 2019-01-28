@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="605.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.ProductComputerController">
+<AnchorPane prefHeight="615.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.ProductComputerController">
     <children>
         <Label fx:id="computerNameLabel" alignment="CENTER" layoutX="66.0" layoutY="20.0" prefHeight="21.0" prefWidth="318.0" textAlignment="CENTER">
             <font>
@@ -24,32 +24,32 @@
         <Label layoutX="15.0" layoutY="310.0" text="Graphic memory :" />
         <Label layoutX="15.0" layoutY="350.0" text="RAM :" />
         <Label layoutX="15.0" layoutY="390.0" text="HDD :" />
-        <Label layoutX="15.0" layoutY="420.0" text="SSD :" />
-        <Label layoutX="15.0" layoutY="460.0" text="DVD :" />
-        <Label layoutX="15.0" layoutY="500.0" text="Screen size :" />
-        <Label layoutX="15.0" layoutY="540.0" text="Resolution : " />
-        <Label layoutX="260.0" layoutY="570.0" text="Price :">
+        <Label layoutX="15.0" layoutY="430.0" text="SSD :" />
+        <Label layoutX="15.0" layoutY="470.0" text="DVD :" />
+        <Label layoutX="15.0" layoutY="510.0" text="Screen size :" />
+        <Label layoutX="15.0" layoutY="550.0" text="Resolution : " />
+        <Label layoutX="260.0" layoutY="580.0" text="Price :">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label fx:id="computerPriceLabel" layoutX="336.0" layoutY="570.0" prefHeight="27.0" prefWidth="75.0">
+        <Label fx:id="computerPriceLabel" layoutX="336.0" layoutY="580.0" prefHeight="27.0" prefWidth="75.0">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
         <Label fx:id="computerBrandLabel" layoutX="160.0" layoutY="70.0" />
-        <Label fx:id="computerModelLabel" layoutX="160.0" layoutY="110.0"/>
+        <Label fx:id="computerModelLabel" layoutX="160.0" layoutY="110.0" />
         <Label fx:id="computerCPULabel" layoutX="160.0" layoutY="150.0" />
-        <Label fx:id="computerCPUCoreLabel" layoutX="160.0" layoutY="190.0"  />
-        <Label fx:id="computerCPUSpeedLabel" layoutX="160.0" layoutY="230.0"  />
-        <Label fx:id="computerGraphicCardLabel" layoutX="160.0" layoutY="270.0"  />
-        <Label fx:id="computerGraphicMemoryLabel" layoutX="160.0" layoutY="310.0"  />
-        <Label fx:id="computerRAMLabel" layoutX="160.0" layoutY="350.0"  />
-        <Label fx:id="computerHDDLabel" layoutX="160.0" layoutY="390.0"  />
-        <Label fx:id="computerSSDLabel" layoutX="160.0" layoutY="420.0"  />
-        <Label fx:id="computerDVDLabel" layoutX="160.0" layoutY="460.0"  />
-        <Label fx:id="computerScreenLabel" layoutX="160.0" layoutY="500.0"  />
-        <Label fx:id="computerResolutionLabel" layoutX="160.0" layoutY="540.0" />
+        <Label fx:id="computerCPUCoreLabel" layoutX="160.0" layoutY="190.0" />
+        <Label fx:id="computerCPUSpeedLabel" layoutX="160.0" layoutY="230.0" />
+        <Label fx:id="computerGraphicCardLabel" layoutX="160.0" layoutY="270.0" />
+        <Label fx:id="computerGraphicMemoryLabel" layoutX="160.0" layoutY="310.0" />
+        <Label fx:id="computerRAMLabel" layoutX="160.0" layoutY="350.0" />
+        <Label fx:id="computerHDDLabel" layoutX="160.0" layoutY="390.0" />
+        <Label fx:id="computerSSDLabel" layoutX="160.0" layoutY="430.0" />
+        <Label fx:id="computerDVDLabel" layoutX="160.0" layoutY="470.0" />
+        <Label fx:id="computerScreenLabel" layoutX="160.0" layoutY="510.0" />
+        <Label fx:id="computerResolutionLabel" layoutX="160.0" layoutY="550.0" />
     </children>
 </AnchorPane>

@@ -2,18 +2,24 @@ package Customer;
 
 import NewCustomer.CheckingFormulas;
 import Product.GeneralProduct;
+import Product.ProductComputerController;
+import Product.ProductMobileController;
 import connectors.Close;
 import connectors.Database;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -244,6 +250,7 @@ public class CustomerController implements Initializable {
         productTypeComboBox.getSelectionModel().selectFirst();
         isAvailableCheckBox.setSelected(false);
         inBudgetCheckBox.setSelected(false);
+        productTable.getItems().clear();
         fillProductTable();
     }
 
@@ -271,6 +278,48 @@ public class CustomerController implements Initializable {
                     " WHERE p.id_product = "+Integer.parseInt(idField.getText());
             productTable.getItems().clear();
             showProductTable(sqlQuery);
+        }
+    }
+
+    public void showDescription(){
+        try {
+
+            if (productTable.getSelectionModel().getSelectedItem() != null) {
+                String productType = productTable.getSelectionModel().getSelectedItem().getType();
+
+                Stage descriptionStage = new Stage();
+                FXMLLoader loader = null;
+
+
+                switch (productType) {
+                    case "Notebook":
+                    case "PC":
+                        ProductComputerController.id_product = productTable.getSelectionModel().getSelectedItem().getId_product();
+
+                        loader = new FXMLLoader(getClass().getResource("/Product/ProductComputer.fxml"));
+                        ProductMobileController computerController = loader.getController();
+                        break;
+                    case "Smartphone":
+                    case "Tablet":
+                        ProductMobileController.id_product = productTable.getSelectionModel().getSelectedItem().getId_product();
+
+                        loader = new FXMLLoader(getClass().getResource("/Product/ProductMobile.fxml"));
+                        ProductMobileController mobileController = loader.getController();
+
+                        break;
+                }
+
+                Parent root = (Parent) loader.load();
+                Scene scene = new Scene(root);
+                descriptionStage.setScene(scene);
+                descriptionStage.setTitle("Product description");
+                descriptionStage.setResizable(false);
+
+
+                descriptionStage.show();
+            }
+        } catch ( Exception ex){
+            ex.printStackTrace();
         }
     }
 

@@ -196,10 +196,10 @@ public class LoginController implements Initializable {
             preparedStatement = Database.connection.prepareStatement(sqlQuery);
             preparedStatement.setString(1,email);
             ResultSet result = preparedStatement.executeQuery();
-            System.out.println("findIDByEmail: email = "+email+", id = "+result.getInt(1));
-
-            return result.getInt(1);
-
+            if(result.next()) {
+                System.out.println("findIDByEmail: email = " + email + ", id = " + result.getInt(1));
+                return result.getInt(1);
+            }
         } catch (SQLException ex){
             ex.getMessage();
         }

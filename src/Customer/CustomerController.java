@@ -4,6 +4,7 @@ import NewCustomer.CheckingFormulas;
 import Product.GeneralProduct;
 import Product.ProductComputerController;
 import Product.ProductMobileController;
+import Product.ShortcutProduct;
 import connectors.Close;
 import connectors.Database;
 import javafx.application.Platform;
@@ -28,6 +29,7 @@ import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
     static public int id; // id_client
+    static public int id_cart; // id_cart
     private Customer customer;
     //
     //
@@ -78,6 +80,18 @@ public class CustomerController implements Initializable {
     private TextField idField;
 
     // Cart
+    @FXML
+    private TableView<ShortcutProduct> cartTable;
+
+    @FXML
+    private TableColumn<ShortcutProduct, String> cartNameColumn;
+    @FXML
+    private TableColumn<ShortcutProduct, Integer> cartQuantityColumn, cartIDColumn;
+    @FXML
+    private TableColumn<ShortcutProduct, Double> cartPriceColumn;
+
+    @FXML
+    private Label cartPriceLabel;
 
 
     // Orders
@@ -121,6 +135,13 @@ public class CustomerController implements Initializable {
         } else {
             customer = new Customer(id);
             showUserInformation();
+
+            fillCartTable();
+            cartIDColumn.setCellValueFactory(new PropertyValueFactory<>("id_product"));
+            cartNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            cartQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+            cartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
+
         }
 
         // CATALOG
@@ -141,7 +162,7 @@ public class CustomerController implements Initializable {
         productPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
         productQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
 
-        // onCloseRequest
+        // onCloseRequest - closing SSH and database connection
         ap.sceneProperty().addListener((obs, oldScene, newScene) -> {
             Platform.runLater(() -> {
                 Stage stage = (Stage) newScene.getWindow();
@@ -154,6 +175,7 @@ public class CustomerController implements Initializable {
         });
 
     }
+
 
 
 
@@ -182,16 +204,15 @@ public class CustomerController implements Initializable {
 
     private void fillProductTable(){
 
-        String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type";
-        // [EDYCJA]
-        // ZMIENIC NA WIDOK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type";
+        String sqlQuery = "SELECT * FROM generalproductview g";
 
         boolean isFilter = false;
 
         String type = productTypeComboBox.getSelectionModel().getSelectedItem();
 
         if( !type.equals("All")){
-            sqlQuery += " WHERE t.type_name= \'"+type+"\'";
+            sqlQuery += " WHERE g.type_name= \'"+type+"\'";
             isFilter = true;
         }
 
@@ -200,7 +221,7 @@ public class CustomerController implements Initializable {
                 sqlQuery += " WHERE";
             else
                 sqlQuery += " AND";
-            sqlQuery += " p.quantity_store > 0";
+            sqlQuery += " g.quantity_store > 0";
         }
 
         if(inBudgetCheckBox.isSelected()){
@@ -208,7 +229,7 @@ public class CustomerController implements Initializable {
                 sqlQuery += " WHERE";
             else
                 sqlQuery += " AND";
-            sqlQuery += " p.price < "+ customer.client.getMoney();
+            sqlQuery += " g.price < "+ customer.client.getMoney();
         }
 
         showProductTable(sqlQuery);
@@ -328,6 +349,61 @@ public class CustomerController implements Initializable {
 
 
 // ------------------------------- CART ------------------------------------
+
+    private void fillCartTable(){
+
+        String sqlQuery = "SELECT * FROM cartview c WHERE c.id_client = ?";
+
+        showCartTable(sqlQuery);
+    }
+
+    public void showCartTable(String sqlQuery){
+        try{
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1,CustomerController.id);
+            ResultSet result = preparedStatement.executeQuery();
+            while(result.next()){
+                ShortcutProduct product = new ShortcutProduct(
+                        result.getInt(1), // id_product
+                        result.getString(2), // name
+                        result.getInt(3), // quantity
+                        result.getDouble(4)// price
+                );
+                System.out.println(product);
+                cartTable.getItems().add(product);
+            }
+            CustomerController.id_cart=result.getInt(5);
+        }catch (SQLException ex){
+            ex.printStackTrace();
+
+        }
+    }
+
+    public void deleteFromCart(){
+        if (cartTable.getSelectionModel().getSelectedItem() != null) {
+            int id = cartTable.getSelectionModel().getSelectedItem().getId_product();
+
+            String sqlQuery = "DELETE FROM product_list p WHERE id_product=? AND p.id_cart=? ";
+
+            try{
+                PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+                preparedStatement.setInt(1,id);
+                preparedStatement.setInt(2,CustomerController.id_cart);
+
+                ResultSet result = preparedStatement.executeQuery(sqlQuery);
+
+                if (result.next()){
+                    fillCartTable();
+                }
+            }catch (SQLException ex){
+                ex.printStackTrace();
+            }
+
+
+        }
+    }
+
+
 
 
 // ----------------------------------- ORDERS ---------------------------------

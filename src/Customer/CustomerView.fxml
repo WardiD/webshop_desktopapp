@@ -24,7 +24,7 @@
                               </Label>
                               <ComboBox fx:id="productTypeComboBox" layoutX="73.0" layoutY="65.0" prefHeight="31.0" prefWidth="254.0" />
                               <Separator layoutX="20.0" layoutY="709.0" prefWidth="350.0" />
-                              <Button fx:id="addToCartButton" layoutX="207.0" layoutY="796.0" mnemonicParsing="false" text="Add to shopping cart" />
+                              <Button fx:id="addToCartButton" layoutX="207.0" layoutY="796.0" mnemonicParsing="false" onAction="#addToCart" text="Add to shopping cart" />
                               <Label layoutX="20.0" layoutY="801.0" text="Quantity : " />
                               <TextField fx:id="quantityField" layoutX="111.0" layoutY="796.0" prefHeight="31.0" prefWidth="67.0" />
                               <CheckBox fx:id="isAvailableCheckBox" layoutX="55.0" layoutY="177.0" mnemonicParsing="false" text="is available now">
@@ -96,9 +96,9 @@
                               <Font size="36.0" />
                            </font>
                         </Label>
-                        <Button fx:id="removeProductCartButton" layoutX="186.0" layoutY="146.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="134.0" text="Remove product" />
+                        <Button fx:id="removeProductCartButton" layoutX="186.0" layoutY="146.0" mnemonicParsing="false" onAction="#removeFromCart" prefHeight="42.0" prefWidth="134.0" text="Remove product" />
                         <Button fx:id="makeOrderButton" layoutX="690.0" layoutY="765.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="221.0" text="Make order!" />
-                        <Button fx:id="clearCartButton" layoutX="378.0" layoutY="680.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="122.0" text="Clear the cart" />
+                        <Button fx:id="clearCartButton" layoutX="378.0" layoutY="680.0" mnemonicParsing="false" onAction="#clearCart" prefHeight="42.0" prefWidth="122.0" text="Clear the cart" />
                      </children></AnchorPane>
               </content>
             </Tab>

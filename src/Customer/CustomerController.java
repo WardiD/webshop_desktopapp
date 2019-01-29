@@ -25,6 +25,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
@@ -122,6 +123,7 @@ public class CustomerController implements Initializable {
 
 // --------------------------- GENERAL --------------------------------------------
     public void initialize(URL url, ResourceBundle rb){
+        CustomerController.id_cart = 1;
         if(id == -1){
             // disable items allowed only for customers
             cartTab.setDisable(true);
@@ -233,8 +235,6 @@ public class CustomerController implements Initializable {
         }
 
         showProductTable(sqlQuery);
-
-
     }
 
 
@@ -344,7 +344,86 @@ public class CustomerController implements Initializable {
         }
     }
 
+    public void addToCart(){
 
+        try {
+        // checking quantity ( is parsable to int )
+            Integer.valueOf(quantityField.getText());
+
+        // checking cart exist
+            String sqlQuery;
+
+
+            if (CustomerController.id_cart == -1) {
+                sqlQuery = "INSERT INTO cart (id_client) VALUES (?)";
+
+                PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement.setInt(1, CustomerController.id);
+
+                int countRow = preparedStatement.executeUpdate();
+                ResultSet result = preparedStatement.getGeneratedKeys();
+
+                if(countRow != 0  && result.next()){
+                    CustomerController.id_cart=result.getInt(1);
+                    System.out.println("New cart - id = "+CustomerController.id_cart);
+                } else {
+                    System.out.println("Problem z dodaniem nowego koszyka");
+                }
+            }
+         //  checking selected product is in cart
+            sqlQuery = "SELECT * FROM product_list WHERE id_cart = ? AND id_product = ?";
+
+            PreparedStatement preparedStatement1 = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement1.setInt(1, CustomerController.id_cart);
+            preparedStatement1.setInt(2, productTable.getSelectionModel().getSelectedItem().getId_product());
+
+            ResultSet result = preparedStatement1.executeQuery();
+            if(result.next()){
+                sqlQuery = "UPDATE product_list SET quantity=quantity + ? WHERE id_cart = ? AND id_product = ?";
+
+                PreparedStatement preparedStatement2 = Database.connection.prepareStatement(sqlQuery);
+                // walidacja do inta
+                preparedStatement2.setInt(1, Integer.parseInt(quantityField.getText()));
+                preparedStatement2.setInt(2, CustomerController.id_cart);
+                preparedStatement2.setInt(3, productTable.getSelectionModel().getSelectedItem().getId_product());
+
+                int updated = preparedStatement2.executeUpdate();
+                if(updated != 0){
+                    System.out.println("CART UPDATE");
+                    cartTable.getItems().clear();
+                    fillCartTable();
+                }
+            } else {
+                sqlQuery = "INSERT INTO product_list (id_cart,id_product,quantity) VALUES (?,?,?)";
+
+                PreparedStatement preparedStatement2 = Database.connection.prepareStatement(sqlQuery);
+
+                preparedStatement2.setInt(1, CustomerController.id_cart);
+                preparedStatement2.setInt(2, productTable.getSelectionModel().getSelectedItem().getId_product());
+                // walidacja do inta
+                preparedStatement2.setInt(3, Integer.parseInt(quantityField.getText()));
+
+
+                int added = preparedStatement2.executeUpdate();
+
+                if(added != 0){
+                    System.out.println("INSERT INTO CART");
+                    cartTable.getItems().clear();
+                    fillCartTable();
+                }
+            }
+        } catch (NumberFormatException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error - quantity");
+            alert.setHeaderText(null);
+            alert.setContentText("Problem with quantity value - it should be integer number");
+
+            alert.showAndWait();
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+    }
 
 
 
@@ -358,6 +437,7 @@ public class CustomerController implements Initializable {
     }
 
     public void showCartTable(String sqlQuery){
+        boolean isCartSet = false;
         try{
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
             preparedStatement.setInt(1,CustomerController.id);
@@ -369,17 +449,22 @@ public class CustomerController implements Initializable {
                         result.getInt(3), // quantity
                         result.getDouble(4)// price
                 );
+                if(!isCartSet){
+                    CustomerController.id_cart=result.getInt(5);
+                    isCartSet = true;
+                }
+
                 System.out.println(product);
                 cartTable.getItems().add(product);
             }
-            CustomerController.id_cart=result.getInt(5);
+
         }catch (SQLException ex){
             ex.printStackTrace();
 
         }
     }
 
-    public void deleteFromCart(){
+    public void removeFromCart(){
         if (cartTable.getSelectionModel().getSelectedItem() != null) {
             int id = cartTable.getSelectionModel().getSelectedItem().getId_product();
 
@@ -390,16 +475,39 @@ public class CustomerController implements Initializable {
                 preparedStatement.setInt(1,id);
                 preparedStatement.setInt(2,CustomerController.id_cart);
 
-                ResultSet result = preparedStatement.executeQuery(sqlQuery);
+                int deletedRow = preparedStatement.executeUpdate();
 
-                if (result.next()){
+                if (deletedRow != 0){
+                    cartTable.getItems().clear();
                     fillCartTable();
+                } else {
+                    System.out.println("problem z usuwaniem z koszyka");
                 }
             }catch (SQLException ex){
                 ex.printStackTrace();
             }
 
 
+        }
+    }
+
+
+    public void clearCart(){
+        String sqlQuery = "DELETE FROM product_list p WHERE p.id_cart=? ";
+
+        try{
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1,CustomerController.id_cart);
+
+            int deletedRows = preparedStatement.executeUpdate();
+
+            if (deletedRows > 0){
+                //sqlQuery = "DELETE FROM cart c WHERE c.id_cart=?";
+                cartTable.getItems().clear();
+                fillCartTable();
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
         }
     }
 

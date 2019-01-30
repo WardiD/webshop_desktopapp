@@ -53,9 +53,9 @@
                            <children>
                               <ScrollPane prefHeight="861.0" prefWidth="1192.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2000.0" prefWidth="1190.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="859.0" prefWidth="1190.0">
                                        <children>
-                                          <TableView fx:id="productTable" prefHeight="2000.0" prefWidth="1173.0">
+                                          <TableView fx:id="productTable" prefHeight="857.0" prefWidth="1173.0">
                                             <columns>
                                               <TableColumn fx:id="productNameColumn" prefWidth="662.0" resizable="false" text="Product name" />
                                               <TableColumn fx:id="productIDColumn" minWidth="0.0" prefWidth="111.0" resizable="false" text="Product's ID" />
@@ -104,7 +104,20 @@
             </Tab>
             <Tab fx:id="ordersTab" text="My Orders">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="orderTable" layoutX="252.0" layoutY="36.0" prefHeight="675.0" prefWidth="1097.0">
+                          <columns>
+                            <TableColumn fx:id="orderIDColumn" prefWidth="75.0" text="Order ID" />
+                            <TableColumn fx:id="orderWorkerColumn" prefWidth="437.0" text="Responsible worker" />
+                              <TableColumn fx:id="orderStatusColumn" prefWidth="145.0" text="Status" />
+                              <TableColumn fx:id="orderPlacedDateColumn" prefWidth="139.0" text="Placed date" />
+                              <TableColumn fx:id="orderRealizationDateColumn" prefWidth="137.0" text="Realization date" />
+                              <TableColumn fx:id="orderPriceColumn" prefWidth="160.0" text="Price" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="showOrderButton" layoutX="713.0" layoutY="744.0" mnemonicParsing="false" onAction="#showOrderDescription" text="Show order description" />
+                     </children></AnchorPane>
               </content>
             </Tab>
           <Tab fx:id="userTab" text="Information of user">

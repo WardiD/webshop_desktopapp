@@ -1,10 +1,7 @@
 package Customer;
 
 import NewCustomer.CheckingFormulas;
-import Product.GeneralProduct;
-import Product.ProductComputerController;
-import Product.ProductMobileController;
-import Product.ShortcutProduct;
+import Product.*;
 import connectors.Close;
 import connectors.Database;
 import javafx.application.Platform;
@@ -23,10 +20,7 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
@@ -97,7 +91,16 @@ public class CustomerController implements Initializable {
 
 
     // Orders
-
+    @FXML
+    private TableView<Transaction> orderTable;
+    @FXML
+    private TableColumn<Transaction,Integer> orderIDColumn;
+    @FXML
+    private TableColumn<Transaction,String> orderWorkerColumn,orderStatusColumn;
+    @FXML
+    private TableColumn<Transaction,Double> orderPriceColumn;
+    @FXML
+    private TableColumn<Transaction, Date> orderPlacedDateColumn,orderRealizationDateColumn;
 
     // Informations of user
     @FXML
@@ -144,6 +147,15 @@ public class CustomerController implements Initializable {
             cartNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
             cartQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
             cartPriceColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
+
+            fillOrderTable();
+            orderIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            orderWorkerColumn.setCellValueFactory(new PropertyValueFactory<>("workerName"));
+            orderStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+            orderPlacedDateColumn.setCellValueFactory(new PropertyValueFactory<>("placedDate"));
+            orderRealizationDateColumn.setCellValueFactory(new PropertyValueFactory<>("realizationDate"));
+            orderPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
 
         }
 
@@ -563,6 +575,8 @@ public class CustomerController implements Initializable {
                 System.out.println("countrrow 2 = "+countrow);
                 if( countrow != 0 ){
                     System.out.println("Transaction made succesfully");
+                    orderTable.getItems().clear();
+                    fillOrderTable();
                 }
             }
         } catch (SQLException ex){
@@ -576,6 +590,44 @@ public class CustomerController implements Initializable {
 
 
 // ----------------------------------- ORDERS ---------------------------------
+
+    public void fillOrderTable(){
+        String sqlQuery = "SELECT * FROM orderview o WHERE o.id_client = ?";
+
+        showOrderTable(sqlQuery);
+    }
+
+    private void showOrderTable(String sqlQuery) {
+        try {
+
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, CustomerController.id);
+
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                Transaction transaction = new Transaction(
+                        result.getInt(1),
+                        (result.getString(2).isEmpty() ? "" : result.getString(2) ),
+                        result.getString(3),
+                        result.getDate(4),
+                        result.getDate(5),
+                        result.getDouble(6),
+                        result.getInt(7)
+                );
+                System.out.println(transaction);
+                orderTable.getItems().add(transaction);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void showOrderDescription(){
+        System.out.println("gicik");
+    }
+
+
 
 // ---------------------------- USER ---------------------------------------------------
     private void showUserInformation(){

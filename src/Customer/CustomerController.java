@@ -123,7 +123,7 @@ public class CustomerController implements Initializable {
 
 // --------------------------- GENERAL --------------------------------------------
     public void initialize(URL url, ResourceBundle rb){
-        CustomerController.id_cart = 1;
+        CustomerController.id_cart = -1;
         if(id == -1){
             // disable items allowed only for customers
             cartTab.setDisable(true);
@@ -456,8 +456,8 @@ public class CustomerController implements Initializable {
 
                 System.out.println(product);
                 cartTable.getItems().add(product);
+                computeCartPrice();
             }
-
         }catch (SQLException ex){
             ex.printStackTrace();
 
@@ -512,6 +512,54 @@ public class CustomerController implements Initializable {
     }
 
 
+    private void computeCartPrice() {
+        try {
+
+            String sqlQuery = "UPDATE cart SET cart_price = (SELECT SUM(p.price * pl.quantity) FROM product_list pl JOIN product p ON pl.id_product=p.id_product WHERE pl.id_cart=? GROUP BY pl.id_cart) WHERE id_cart=?";
+
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1,CustomerController.id_cart);
+            preparedStatement.setInt(2,CustomerController.id_cart);
+
+            int countrow = preparedStatement.executeUpdate();
+            if(countrow != 0){
+                sqlQuery = "SELECT cart_price FROM cart WHERE id_client=?";
+
+                preparedStatement = Database.connection.prepareStatement(sqlQuery);
+                preparedStatement.setInt(1, CustomerController.id_cart);
+
+                ResultSet result = preparedStatement.executeQuery();
+                if(result.next()){
+                    cartPriceLabel.setText(Double.toString(result.getDouble(1)));
+                }
+            }
+
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void makeOrder(){
+
+        try {
+            String sqlQuery = "UPDATE cart SET ordered=true WHERE id_cart = ? ";
+
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, CustomerController.id_cart);
+
+            int countRow = preparedStatement.executeUpdate();
+            if(countRow != 0){
+
+            }
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+
+
+        cartTable.getItems().clear();
+        CustomerController.id_cart=-1;
+    }
 
 
 // ----------------------------------- ORDERS ---------------------------------

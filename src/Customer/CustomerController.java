@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.IOException;
 import java.net.URL;
@@ -101,6 +100,9 @@ public class CustomerController implements Initializable {
     private TableColumn<Transaction,Double> orderPriceColumn;
     @FXML
     private TableColumn<Transaction, Date> orderPlacedDateColumn,orderRealizationDateColumn;
+
+    @FXML
+    private Button showOrderButton;
 
     // Informations of user
     @FXML
@@ -364,6 +366,9 @@ public class CustomerController implements Initializable {
         // checking quantity ( is parsable to int )
             Integer.valueOf(quantityField.getText());
 
+            if(Integer.valueOf(quantityField.getText()) > productTable.getSelectionModel().getSelectedItem().getQuantity())
+                throw new Exception();
+
         // checking cart exist
             String sqlQuery;
 
@@ -435,6 +440,13 @@ public class CustomerController implements Initializable {
             alert.showAndWait();
         } catch (SQLException ex){
             ex.printStackTrace();
+        } catch (Exception ex){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning - not enough products!");
+            alert.setHeaderText(null);
+            alert.setContentText("Problem with quantity - We haven't enough products for your order");
+
+            alert.showAndWait();
         }
 
     }
@@ -555,8 +567,22 @@ public class CustomerController implements Initializable {
     }
 
     public void makeOrder(){
-        System.out.println("--- MAKE ORDER ---- ID CART "+CustomerController.id_cart );
+
         try {
+            String sqlQuery0 = "SELECT c.id_cart, c.id_product, c.quantity, p.quantity_store  FROM cartview c JOIN product p ON c.id_product = p.id_product WHERE c.id_cart = ?";
+
+            PreparedStatement preparedStatement0 = Database.connection.prepareStatement(sqlQuery0);
+            preparedStatement0.setInt(1,CustomerController.id_cart);
+
+            ResultSet resultSet = preparedStatement0.executeQuery();
+            System.out.println("id cart w makeorder = "+CustomerController.id_cart);
+            while(resultSet.next()){
+                System.out.println("make order - sprawdzenie ilosci w koszyky i magazynie");
+                if(resultSet.getInt(3) > resultSet.getInt(4))
+                    throw new Exception();
+            }
+
+
             String sqlQuery = "UPDATE cart SET ordered=true WHERE id_cart = ? ";
 
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
@@ -577,15 +603,23 @@ public class CustomerController implements Initializable {
                     System.out.println("Transaction made succesfully");
                     orderTable.getItems().clear();
                     fillOrderTable();
+
+                    cartTable.getItems().clear();
+                    cartPriceLabel.setText("");
+                    CustomerController.id_cart = -1;
                 }
             }
         } catch (SQLException ex){
             ex.printStackTrace();
+        } catch (Exception ex){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error - quantity in order!");
+            alert.setHeaderText(null);
+            alert.setContentText("Problem with quantity - one ( or more ) position from your order list isn't available now!");
+
+            alert.showAndWait();
         }
-        cartTable.getItems().clear();
-        cartPriceLabel.setText("");
-        CustomerController.id_cart = -1;
-        System.out.println("--- MAKE ORDER ---- NEW VALUE"+CustomerController.id_cart );
+
     }
 
 
@@ -624,7 +658,29 @@ public class CustomerController implements Initializable {
     }
 
     public void showOrderDescription(){
-        System.out.println("gicik");
+        try {
+
+            if (orderTable.getSelectionModel().getSelectedItem() != null) {
+                OrderViewController.setOrderViewID(orderTable.getSelectionModel().getSelectedItem().getId_cart(),
+                        CustomerController.id);
+
+                Stage orderStage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Product/OrderView.fxml"));
+                OrderViewController orderViewController = loader.getController();
+
+                Parent root = (Parent) loader.load();
+                Scene scene = new Scene(root);
+                orderStage.setScene(scene);
+                orderStage.setTitle("Order description");
+                orderStage.setResizable(false);
+
+
+                orderStage.show();
+            }
+        } catch ( Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
 

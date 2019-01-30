@@ -601,6 +601,18 @@ public class CustomerController implements Initializable {
                 System.out.println("countrrow 2 = "+countrow);
                 if( countrow != 0 ){
                     System.out.println("Transaction made succesfully");
+
+                    String sqlQuery2 = "UPDATE product SET quantity_store = ( quantity_store - product_list.quantity ) FROM product_list WHERE product.id_product = product_list.id_product AND product_list.id_cart = ?";
+
+                    PreparedStatement preparedStatement1 = Database.connection.prepareStatement(sqlQuery2);
+                    preparedStatement1.setInt(1, CustomerController.id_cart);
+
+                    int CountRow1 = preparedStatement1.executeUpdate();
+                    System.out.println("make order - update PRODUCT quantity store = "+ CountRow1);
+
+                    productTable.getItems().clear();
+                    fillProductTable();
+
                     orderTable.getItems().clear();
                     fillOrderTable();
 

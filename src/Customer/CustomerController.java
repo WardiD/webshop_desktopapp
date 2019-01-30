@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.IOException;
 import java.net.URL;
@@ -176,6 +177,7 @@ public class CustomerController implements Initializable {
             });
         });
 
+        System.out.println("Initialize - id cart = "+id_cart);
     }
 
 
@@ -345,7 +347,7 @@ public class CustomerController implements Initializable {
     }
 
     public void addToCart(){
-
+        System.out.println("CART ----------- = "+CustomerController.id_cart);
         try {
         // checking quantity ( is parsable to int )
             Integer.valueOf(quantityField.getText());
@@ -355,7 +357,7 @@ public class CustomerController implements Initializable {
 
 
             if (CustomerController.id_cart == -1) {
-                sqlQuery = "INSERT INTO cart (id_client) VALUES (?)";
+                sqlQuery = "INSERT INTO cart (id_client, ordered) VALUES (?,false )";
 
                 PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setInt(1, CustomerController.id);
@@ -456,12 +458,12 @@ public class CustomerController implements Initializable {
 
                 System.out.println(product);
                 cartTable.getItems().add(product);
-                computeCartPrice();
             }
         }catch (SQLException ex){
             ex.printStackTrace();
 
         }
+        computeCartPrice();
     }
 
     public void removeFromCart(){
@@ -521,15 +523,16 @@ public class CustomerController implements Initializable {
             preparedStatement.setInt(1,CustomerController.id_cart);
             preparedStatement.setInt(2,CustomerController.id_cart);
 
-            int countrow = preparedStatement.executeUpdate();
-            if(countrow != 0){
-                sqlQuery = "SELECT cart_price FROM cart WHERE id_client=?";
+            int countRow = preparedStatement.executeUpdate();
+            System.out.println("compute price - countRow = "+countRow);
+            if(countRow != 0){
+                String sqlQuery1 = "SELECT cart_price FROM cart WHERE id_client=? AND ordered = false";
+                PreparedStatement preparedStatement1 = Database.connection.prepareStatement(sqlQuery1);
+                preparedStatement1.setInt(1, CustomerController.id);
 
-                preparedStatement = Database.connection.prepareStatement(sqlQuery);
-                preparedStatement.setInt(1, CustomerController.id_cart);
-
-                ResultSet result = preparedStatement.executeQuery();
+                ResultSet result = preparedStatement1.executeQuery();
                 if(result.next()){
+                    System.out.println("compute price - setting Label" );
                     cartPriceLabel.setText(Double.toString(result.getDouble(1)));
                 }
             }
@@ -540,25 +543,35 @@ public class CustomerController implements Initializable {
     }
 
     public void makeOrder(){
-
+        System.out.println("--- MAKE ORDER ---- ID CART "+CustomerController.id_cart );
         try {
             String sqlQuery = "UPDATE cart SET ordered=true WHERE id_cart = ? ";
 
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
             preparedStatement.setInt(1, CustomerController.id_cart);
 
-            int countRow = preparedStatement.executeUpdate();
-            if(countRow != 0){
+            int countrow = preparedStatement.executeUpdate();
+            System.out.println("countrrow 1 = "+countrow);
+            if( countrow != 0){
+                String sqlQuery1 = "INSERT INTO transactions (id_client, id_cart, creation_date) VALUES (?,?, NOW()) ";
 
+                preparedStatement = Database.connection.prepareStatement(sqlQuery1);
+                preparedStatement.setInt(1,CustomerController.id);
+                preparedStatement.setInt(2,CustomerController.id_cart);
+
+                countrow = preparedStatement.executeUpdate();
+                System.out.println("countrrow 2 = "+countrow);
+                if( countrow != 0 ){
+                    System.out.println("Transaction made succesfully");
+                }
             }
         } catch (SQLException ex){
             ex.printStackTrace();
         }
-
-
-
         cartTable.getItems().clear();
-        CustomerController.id_cart=-1;
+        cartPriceLabel.setText("");
+        CustomerController.id_cart = -1;
+        System.out.println("--- MAKE ORDER ---- NEW VALUE"+CustomerController.id_cart );
     }
 
 

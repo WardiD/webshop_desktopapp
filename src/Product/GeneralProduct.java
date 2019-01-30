@@ -23,8 +23,6 @@ public class GeneralProduct {
                 "name='" + name + '\'' +
                 ", id_product=" + id_product +
                 ", type='" + type + '\'' +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';

@@ -8,12 +8,16 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -39,7 +43,8 @@ public class WorkerController implements Initializable {
     @FXML
     private TableColumn<Workers,String> workerNameColumn,workerEmailColumn;
     @FXML
-    private Button newWorkerButton,removeWorkerButton;
+    private Button newWorkerButton,removeWorkerButton,refreshButton;
+
     // --- Orders table
     @FXML
     private TableView<Transaction> orderTable;
@@ -149,6 +154,8 @@ public class WorkerController implements Initializable {
 
     // --- Workers table
     public void fillWorkerTable(){
+        workerTable.getItems().clear();
+
         String sqlQuery = "SELECT id_worker, CONCAT(first_name,' ',last_name), phone_number, email,id_log,superadmin FROM worker";
 
         showWorkerTable(sqlQuery);
@@ -220,9 +227,37 @@ public class WorkerController implements Initializable {
         }
         System.out.println("setting autommit true");
         Database.setAutoCommitTrue();
-        workerTable.getItems().clear();
         fillWorkerTable();
     }
+
+
+    public void addNewWorker(){
+        try{
+            Stage newWorkerStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Worker/newWorker.fxml"));
+
+            Parent root = (Parent) loader.load();
+            newWorkerController newWorkerController = loader.getController();
+
+            Scene scene = new Scene(root);
+            newWorkerStage.setScene(scene);
+            newWorkerStage.setTitle("Adding new worker");
+            newWorkerStage.setResizable(false);
+
+
+            newWorkerStage.show();
+
+
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void refreshWorkerList(){
+        fillWorkerTable();
+    }
+
 
     // --- Orders table
     private ObservableList<String> makeOrderTypeData(){

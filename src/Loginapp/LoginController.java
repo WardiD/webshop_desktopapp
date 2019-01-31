@@ -41,8 +41,6 @@ public class LoginController implements Initializable {
     private Button loginButton;
     @FXML
     private Button guestLoginButton;
-    @FXML
-    private Label dbStatusLabel;
 
     @FXML
     private Label loginStatusLabel;
@@ -59,13 +57,6 @@ public class LoginController implements Initializable {
 
 
     public void initialize(URL url, ResourceBundle rb){
-        if(this.loginModel.isDatabaseConnected()){
-            this.dbStatusLabel.setTextFill(Color.GREEN);
-            this.dbStatusLabel.setText("Connected to shop's database correctly");
-        } else {
-            this.dbStatusLabel.setTextFill(Color.RED);
-            this.dbStatusLabel.setText("DATABASE ERROR");
-        }
     }
 
     @FXML

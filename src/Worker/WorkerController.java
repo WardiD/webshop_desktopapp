@@ -161,6 +161,53 @@ public class WorkerController implements Initializable {
         }
     }
 
+
+    public void removeWorker(){
+        if(workerTable.getSelectionModel().getSelectedItem().isSuperAdmin()){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("ERROR!");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("You cannot remove SuperAdmin from database!!!");
+
+            errorAlert.showAndWait();
+
+            return;
+        }
+        System.out.println(" przed usuwaniem");
+        try{
+            Database.connection.setAutoCommit(false);
+            String sqlQuery = "DELETE FROM worker WHERE id_worker = ?";
+
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1,workerTable.getSelectionModel().getSelectedItem().getId_worker());
+
+            int countRow = preparedStatement.executeUpdate();
+            System.out.println("usuwanie worker - "+countRow);
+            if(countRow == 1){
+                String sqlQuery1 = "DELETE FROM administration_panel WHERE id_log = ?";
+                PreparedStatement preparedStatement1 = Database.connection.prepareStatement(sqlQuery1);
+
+                preparedStatement1.setInt(1,workerTable.getSelectionModel().getSelectedItem().getId_log());
+                int countRow1 = preparedStatement1.executeUpdate();
+                System.out.println("usuwanie administration - "+countRow1);
+                if(countRow1 == 1){
+                    Database.connection.commit();
+                    System.out.println("commit");
+                } else {
+                    Database.connection.rollback();
+                }
+            } else {
+                Database.connection.rollback();
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        System.out.println("setting autommit true");
+        Database.setAutoCommitTrue();
+        workerTable.getItems().clear();
+        fillWorkerTable();
+    }
+
     // --- Orders table
     private ObservableList<String> makeOrderTypeData(){
         ObservableList<String> data = FXCollections.observableArrayList();

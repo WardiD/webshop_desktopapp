@@ -6,10 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.OrderViewController">
+<AnchorPane prefHeight="582.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Product.OrderViewController">
    <children>
-      <TableView fx:id="cartTable" layoutY="5.0" prefHeight="577.0" prefWidth="912.0">
+      <TableView fx:id="cartTable" layoutX="12.0" layoutY="3.0" prefHeight="577.0" prefWidth="912.0">
          <columns>
             <TableColumn fx:id="cartIDColumn" prefWidth="109.0" text="Product ID" />
             <TableColumn fx:id="cartNameColumn" minWidth="0.0" prefWidth="547.0" text="Product name" />

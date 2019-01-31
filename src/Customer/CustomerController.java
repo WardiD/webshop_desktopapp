@@ -2,6 +2,7 @@ package Customer;
 
 import NewCustomer.CheckingFormulas;
 import Product.*;
+import com.sun.xml.internal.ws.spi.db.DatabindingException;
 import connectors.Close;
 import connectors.Database;
 import javafx.application.Platform;
@@ -17,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -372,7 +374,7 @@ public class CustomerController implements Initializable {
         // checking cart exist
             String sqlQuery;
 
-
+            Database.connection.setAutoCommit(false);
             if (CustomerController.id_cart == -1) {
                 sqlQuery = "INSERT INTO cart (id_client, ordered) VALUES (?,false )";
 
@@ -387,6 +389,7 @@ public class CustomerController implements Initializable {
                     System.out.println("New cart - id = "+CustomerController.id_cart);
                 } else {
                     System.out.println("Problem z dodaniem nowego koszyka");
+                    Database.connection.rollback();
                 }
             }
          //  checking selected product is in cart
@@ -409,8 +412,12 @@ public class CustomerController implements Initializable {
                 int updated = preparedStatement2.executeUpdate();
                 if(updated != 0){
                     System.out.println("CART UPDATE");
+                    Database.connection.commit();
                     cartTable.getItems().clear();
                     fillCartTable();
+                } else {
+                    System.out.println("rollback");
+                    Database.connection.rollback();
                 }
             } else {
                 sqlQuery = "INSERT INTO product_list (id_cart,id_product,quantity) VALUES (?,?,?)";
@@ -427,8 +434,12 @@ public class CustomerController implements Initializable {
 
                 if(added != 0){
                     System.out.println("INSERT INTO CART");
+                    Database.connection.commit();
                     cartTable.getItems().clear();
                     fillCartTable();
+                } else {
+                    System.out.println("rollback");
+                    Database.connection.rollback();
                 }
             }
         } catch (NumberFormatException ex) {
@@ -448,7 +459,7 @@ public class CustomerController implements Initializable {
 
             alert.showAndWait();
         }
-
+        Database.setAutoCommitTrue();
     }
 
 
@@ -569,6 +580,7 @@ public class CustomerController implements Initializable {
     public void makeOrder(){
 
         try {
+
             String sqlQuery0 = "SELECT c.id_cart, c.id_product, c.quantity, p.quantity_store  FROM cartview c JOIN product p ON c.id_product = p.id_product WHERE c.id_cart = ?";
 
             PreparedStatement preparedStatement0 = Database.connection.prepareStatement(sqlQuery0);
@@ -582,7 +594,7 @@ public class CustomerController implements Initializable {
                     throw new Exception();
             }
 
-
+            Database.connection.setAutoCommit(false);
             String sqlQuery = "UPDATE cart SET ordered=true WHERE id_cart = ? ";
 
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
@@ -619,7 +631,14 @@ public class CustomerController implements Initializable {
                     cartTable.getItems().clear();
                     cartPriceLabel.setText("");
                     CustomerController.id_cart = -1;
+                    Database.connection.commit();
+                } else {
+                    System.out.println("rollback");
+                    Database.connection.rollback();
                 }
+            } else {
+                System.out.println("rollback");
+                Database.connection.rollback();
             }
         } catch (SQLException ex){
             ex.printStackTrace();
@@ -631,7 +650,7 @@ public class CustomerController implements Initializable {
 
             alert.showAndWait();
         }
-
+        Database.setAutoCommitTrue();
     }
 
 

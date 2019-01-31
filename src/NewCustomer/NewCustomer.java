@@ -64,13 +64,22 @@ public class NewCustomer {
 
 
     public boolean addCustomerToDatabase() {
-
-        id_address = addAddressToDatabase();
-        System.out.println();
-        id_contact = addContactToDatabase();
-
-        PreparedStatement preparedStatement = prepareNewClientQuery();
         try{
+            Database.connection.setAutoCommit(false);
+            id_address = addAddressToDatabase();
+            if(id_address == -1) {
+                Database.connection.rollback();
+                return false;
+            }
+
+            id_contact = addContactToDatabase();
+            if(id_contact == -1){
+                Database.connection.rollback();
+                return false;
+            }
+
+            PreparedStatement preparedStatement = prepareNewClientQuery();
+
             int countRows = preparedStatement.executeUpdate();
             System.out.println("client - countrow = "+countRows);
             ResultSet result = preparedStatement.getGeneratedKeys();
@@ -78,10 +87,16 @@ public class NewCustomer {
                 int id_client = result.getInt(1);
                 System.out.println("id_client : " + id_client);
                 return true;
+            } else {
+                Database.connection.rollback();
+                return false;
             }
-        }catch (Exception ex){
+        }catch ( NullPointerException ex) {
+            ex.printStackTrace();
+        } catch (SQLException ex){
             ex.printStackTrace();
         }
+        Database.setAutoCommitTrue();
         return false;
     }
 

@@ -42,7 +42,14 @@ public class Database{
 		
 	}
 
+	public static void setAutoCommitTrue(){
+		try{
+			Database.connection.setAutoCommit(true);
+		} catch (SQLException ex){
+			ex.printStackTrace();
+		}
 
+	}
 
 
 }

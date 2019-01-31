@@ -56,6 +56,11 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="nextStatusButton" layoutX="926.0" layoutY="815.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="175.0" text="NEXT STATUS" />
+      <Button fx:id="nextStatusButton" layoutX="926.0" layoutY="815.0" mnemonicParsing="false" onAction="#nextStatus" prefHeight="53.0" prefWidth="175.0" text="NEXT STATUS" />
+      <Label layoutX="635.0" layoutY="789.0" text="Sort by :">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

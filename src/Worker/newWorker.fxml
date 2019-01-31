@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="349.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Worker.newWorkerController">
+   <children>
+      <Label layoutX="20.0" layoutY="20.0" text="Login :" />
+      <Label layoutX="20.0" layoutY="60.0" text="Password :" />
+      <Label layoutX="20.0" layoutY="100.0" text="Repeat password :" />
+      <Label layoutX="20.0" layoutY="140.0" text="First name :" />
+      <Label layoutX="20.0" layoutY="180.0" text="Last name :" />
+      <Label layoutX="20.0" layoutY="220.0" text="Email :" />
+      <Label layoutX="20.0" layoutY="260.0" text="Phone :" />
+      <Button fx:id="addWorkerButton" layoutX="86.0" layoutY="300.0" mnemonicParsing="false" onAction="#addWorker" prefHeight="31.0" prefWidth="187.0" text="Add worker" AnchorPane.bottomAnchor="15.0" />
+      <TextField fx:id="loginField" layoutX="151.0" layoutY="15.0" />
+      <TextField fx:id="firstNameField" layoutX="151.0" layoutY="135.0" />
+      <TextField fx:id="lastNameField" layoutX="151.0" layoutY="175.0" />
+      <TextField fx:id="emailField" layoutX="151.0" layoutY="215.0" />
+      <TextField fx:id="phoneField" layoutX="151.0" layoutY="255.0" />
+      <PasswordField fx:id="repeatPasswordField" layoutX="151.0" layoutY="95.0" />
+      <PasswordField fx:id="passwordField" layoutX="151.0" layoutY="55.0" />
+   </children>
+</AnchorPane>

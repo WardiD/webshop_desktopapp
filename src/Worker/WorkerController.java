@@ -7,7 +7,6 @@ import connectors.Database;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -81,6 +80,15 @@ public class WorkerController implements Initializable {
         // Orders table
         orderStatusComboBox.setItems(makeOrderTypeData());
         orderStatusComboBox.getSelectionModel().selectFirst();
+        orderStatusComboBox.setOnAction((event -> {
+            System.out.println("GeneralProduct type combo box = wybrano : "+orderStatusComboBox.getSelectionModel().getSelectedItem());
+            if(orderStatusComboBox.getSelectionModel().getSelectedItem().equals("shipped"))
+                nextStatusButton.setDisable(true);
+            else
+                nextStatusButton.setDisable(false);
+            orderTable.getItems().clear();
+            fillOrderTable();
+        }));
 
         fillOrderTable();
         orderIDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -89,6 +97,14 @@ public class WorkerController implements Initializable {
         orderPlacedDateColumn.setCellValueFactory(new PropertyValueFactory<>("placedDate"));
         orderRealizationDateColumn.setCellValueFactory(new PropertyValueFactory<>("realizationDate"));
         orderPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection.getStatus().equals("shipped")) {
+                nextStatusButton.setDisable(true);
+            } else {
+                nextStatusButton.setDisable(false);
+            }
+        });
         // New product
         productTypeComboBox.setItems(makeProductTypeData());
         productTypeComboBox.getSelectionModel().selectFirst();
@@ -230,8 +246,13 @@ public class WorkerController implements Initializable {
     }
 
     public void fillOrderTable(){
-        String sqlQuery = "SELECT * FROM orderview";
+        String sqlQuery = "SELECT * FROM orderview o";
 
+        String sortType = orderStatusComboBox.getSelectionModel().getSelectedItem();
+        if(!sortType.equals("All")) {
+            sqlQuery += " WHERE o.status_name = '"+sortType+"'";
+        }
+        System.out.println(sqlQuery);
         showOrderTable(sqlQuery);
     }
 
@@ -258,6 +279,32 @@ public class WorkerController implements Initializable {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void nextStatus(){
+        try{
+
+            String sqlQuery = "UPDATE transactions SET id_status = id_status + 1, id_worker = ? WHERE id_transaction = ? AND id_status != 3";
+
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setInt(1, WorkerController.id_worker);
+            preparedStatement.setInt(2,orderTable.getSelectionModel().getSelectedItem().getId());
+
+            int countRow = preparedStatement.executeUpdate();
+            if(countRow != 1 ){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Order status");
+                alert.setHeaderText(null);
+                alert.setContentText("Selected order status is \"shipped\" ");
+
+                alert.showAndWait();
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+
+        orderTable.getItems().clear();
+        fillOrderTable();
     }
 
     // --- New product

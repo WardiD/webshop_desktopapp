@@ -41,6 +41,8 @@ public class LoginController implements Initializable {
     private Button loginButton;
     @FXML
     private Button guestLoginButton;
+    @FXML
+    private Label dbStatusLabel;
 
     @FXML
     private Label loginStatusLabel;

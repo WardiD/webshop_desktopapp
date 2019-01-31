@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane fx:id="ap" prefHeight="940.0" prefWidth="1431.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Worker.WorkerController" />
+<AnchorPane fx:id="ap" prefHeight="940.0" prefWidth="1431.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Worker.WorkerController">
+   <children>
+      <TableView fx:id="orderTable" layoutX="608.0" layoutY="70.0" prefHeight="675.0" prefWidth="793.0" AnchorPane.bottomAnchor="197.0" AnchorPane.rightAnchor="30.0">
+         <columns>
+            <TableColumn fx:id="orderIDColumn" prefWidth="67.0" text="Order ID" />
+            <TableColumn fx:id="orderWorkerColumn" prefWidth="283.0" text="Responsible worker" />
+            <TableColumn fx:id="orderStatusColumn" prefWidth="134.0" text="Status" />
+            <TableColumn fx:id="orderPlacedDateColumn" prefWidth="120.0" text="Placed date" />
+            <TableColumn fx:id="orderRealizationDateColumn" prefWidth="121.0" text="Realization date" />
+            <TableColumn fx:id="orderPriceColumn" prefWidth="71.0" text="Price" />
+         </columns>
+      </TableView>
+      <TableView fx:id="workerTable" layoutX="30.0" layoutY="546.0" prefHeight="310.0" prefWidth="546.0" AnchorPane.leftAnchor="30.0">
+        <columns>
+          <TableColumn fx:id="workerIDColumn" prefWidth="36.0" text="ID" />
+          <TableColumn fx:id="workerNameColumn" prefWidth="165.0" text="Name" />
+            <TableColumn fx:id="workerPhoneColumn" prefWidth="153.0" text="Phone" />
+            <TableColumn fx:id="workerEmailColumn" prefWidth="191.0" text="Email" />
+        </columns>
+      </TableView>
+      <Separator layoutX="590.0" layoutY="31.0" orientation="VERTICAL" prefHeight="889.0" prefWidth="0.0" AnchorPane.bottomAnchor="15.0" AnchorPane.topAnchor="15.0" />
+      <Button fx:id="removeWorkerButton" layoutX="362.0" layoutY="829.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="148.0" text="REMOVE WORKER" AnchorPane.bottomAnchor="15.0" />
+      <Button fx:id="newWorkerButton" layoutX="68.0" layoutY="864.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="148.0" text="NEW WORKER" AnchorPane.bottomAnchor="15.0" />
+      <ListView fx:id="customerList" layoutX="30.0" layoutY="50.0" prefHeight="440.0" prefWidth="546.0" />
+      <Label layoutX="30.0" layoutY="509.0" text="Workers :">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="30.0" layoutY="15.0" text="Customers - contact :" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Separator layoutX="10.0" layoutY="507.0" prefHeight="5.0" prefWidth="570.0" />
+      <Label layoutX="938.0" layoutY="15.0" text="ORDERS">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="orderStatusComboBox" layoutX="635.0" layoutY="821.0" prefHeight="41.0" prefWidth="235.0" />
+      <Separator layoutX="1149.0" layoutY="740.0" orientation="VERTICAL" prefHeight="187.0" AnchorPane.bottomAnchor="5.0" />
+      <ComboBox fx:id="productTypeComboBox" layoutX="1177.0" layoutY="799.0" prefHeight="31.0" prefWidth="225.0" />
+      <Button fx:id="addProductButton" layoutX="1199.0" layoutY="856.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="182.0" text="ADD PRODUCT" AnchorPane.rightAnchor="50.0" />
+      <Label layoutX="1177.0" layoutY="752.0" text="New product :">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="nextStatusButton" layoutX="926.0" layoutY="815.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="175.0" text="NEXT STATUS" />
+   </children>
+</AnchorPane>

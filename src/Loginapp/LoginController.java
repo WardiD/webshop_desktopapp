@@ -153,6 +153,7 @@ public class LoginController implements Initializable {
 
     public void workerLogin(){
         try{
+            findWorkerByLogin(adminUsernameField.getText());
             Stage workerStage = new Stage();
             FXMLLoader loader = new FXMLLoader();
             Pane root = loader.load(getClass().getResource("/Worker/Worker.fxml").openStream());
@@ -161,11 +162,32 @@ public class LoginController implements Initializable {
 
             Scene scene = new Scene(root);
             workerStage.setScene(scene);
-            workerStage.setTitle("logged as: "+adminUsernameField.getText());
+            workerStage.setTitle("Logged as: "+adminUsernameField.getText());
             workerStage.setResizable(false);
+
+
 
             workerStage.show();
         } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void findWorkerByLogin(String login){
+        try{
+            String sqlQuery = "SELECT w.id_worker, w.superadmin FROM worker w JOIN administration_panel a ON w.id_log=a.id_log WHERE a.login = ?";
+
+            PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
+            preparedStatement.setString(1,login);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                WorkerController.id_worker = resultSet.getInt(1);
+                WorkerController.superAdmin = resultSet.getBoolean(2);
+                System.out.println("ID worker = "+WorkerController.id_worker+", SA = "+WorkerController.superAdmin);
+            }
+
+        }catch (SQLException ex){
             ex.printStackTrace();
         }
     }

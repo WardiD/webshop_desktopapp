@@ -118,8 +118,7 @@ public class WorkerController implements Initializable {
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);
             ResultSet result = preparedStatement.executeQuery();
             while(result.next()){
-                String contact= null;
-                contact = result.getString(1);
+                String contact = result.getString(1);
                 contact += "  |  "+result.getString(2);
                 if(result.getInt(3) != 0)
                     contact += "  |  "+result.getInt(3);

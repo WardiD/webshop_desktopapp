@@ -102,14 +102,18 @@ public class WorkerController implements Initializable {
         orderPlacedDateColumn.setCellValueFactory(new PropertyValueFactory<>("placedDate"));
         orderRealizationDateColumn.setCellValueFactory(new PropertyValueFactory<>("realizationDate"));
         orderPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-
+        /*
         orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            System.out.println("GET status - poczatke");
             if (newSelection.getStatus().equals("shipped")) {
+                System.out.println("GET status - if true");
                 nextStatusButton.setDisable(true);
             } else {
+                System.out.println("GET status - if false");
                 nextStatusButton.setDisable(false);
             }
         });
+        */
         // New product
         productTypeComboBox.setItems(makeProductTypeData());
         productTypeComboBox.getSelectionModel().selectFirst();

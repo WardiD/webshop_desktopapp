@@ -4,11 +4,17 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
+/**
+ *  Class responsible for connecting application to server, where is our database
+ * @see JSch
+ */
 public class SSH{
 	public static Session session;
 	private static JSch jsch;
 
-
+    /**
+     * Represent connecting to server by SSH with stationary data like hosts, ports, user and password
+     */
 	public static void connectSSH(){
         final String rhost = "pascal.fis.agh.edu.pl";
         final String host= "pascal.fis.agh.edu.pl";
@@ -37,6 +43,9 @@ public class SSH{
 
 	}
 
+    /**
+     * Closing SSH connection
+     */
 	public static void close(){
 		if(SSH.session !=null && SSH.session.isConnected()){
                 System.out.println("Closing SSH Connection");

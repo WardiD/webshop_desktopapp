@@ -6,13 +6,17 @@ import java.sql.SQLException;
 
 import connectors.Database;
 
-
+/**
+ * Login model, which checks written data in database
+ */
 public class LoginModel {
-
-    public boolean isDatabaseConnected(){
-        return Database.connection != null;
-    }
-
+    /**
+     * checks customer exists
+     * @param email
+     * @param password
+     * @return true where input data is correct
+     * @throws Exception
+     */
     public boolean isLoginCustomer(String email, String password) throws Exception{
         System.out.println("isLoginCustomer - email: "+email+", passwd: "+password);
         PreparedStatement preparedStatement = null;
@@ -43,6 +47,13 @@ public class LoginModel {
         }
     }
 
+    /**
+     * Checks worker exists
+     * @param user
+     * @param password
+     * @return true where input data is correct
+     * @throws Exception
+     */
     public boolean isLoginWorker(String user, String password) throws Exception{
         PreparedStatement preparedStatement = null;
         ResultSet result = null;

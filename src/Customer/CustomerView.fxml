@@ -45,7 +45,7 @@
                               </Label>
                               <TextField fx:id="idField" layoutX="119.0" layoutY="608.0" prefHeight="31.0" prefWidth="70.0" />
                               <Button fx:id="showDescriptionButton" layoutX="91.0" layoutY="738.0" mnemonicParsing="false" onAction="#showDescription" text="Show description of product" />
-                              <Button fx:id="searchProductsButton" layoutX="125.0" layoutY="375.0" mnemonicParsing="false" onAction="#ProductFilter" prefHeight="51.0" prefWidth="150.0" text="SEARCH" />
+                              <Button fx:id="searchProductsButton" layoutX="125.0" layoutY="375.0" mnemonicParsing="false" onAction="#productFilter" prefHeight="51.0" prefWidth="150.0" text="SEARCH" />
                               <Button fx:id="clearFiltersButton" layoutX="150.0" layoutY="479.0" mnemonicParsing="false" onAction="#clearFilters" prefHeight="31.0" prefWidth="100.0" text="Clear filters" />
                            </children>
                         </AnchorPane>

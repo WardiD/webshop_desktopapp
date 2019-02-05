@@ -27,6 +27,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Represents controller for login view
+ */
 public class LoginController implements Initializable {
 
 
@@ -62,6 +65,9 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    /**
+     * Checks login and password in workers part of logging
+     */
     public void loginAsWorker(ActionEvent event){
         try{
             if(this.loginModel.isLoginWorker(this.adminUsernameField.getText(),this.adminPasswordField.getText())){
@@ -76,6 +82,9 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    /**
+     * Checks email and password in customer part of logging
+     */
     public void loginAsCustomer(ActionEvent event){
         /*
         System.out.println("loginAsCustomer");
@@ -98,6 +107,9 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    /**
+     * Prepares window for guest mode
+     */
     public void loginAsGuest(){
         try{
             CustomerController.id = -1;
@@ -121,7 +133,9 @@ public class LoginController implements Initializable {
         }
 }
 
-
+    /**
+     * Prepares window for customer view
+     */
     public void customerLogin(){
         try{
             CustomerController.id = findIDByEmail(this.emailField.getText());
@@ -144,6 +158,9 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Prepares window for worker view
+     */
     public void workerLogin(){
         try{
             findWorkerByLogin(adminUsernameField.getText());
@@ -166,6 +183,10 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Searches ID of workers by written login
+     * @param login
+     */
     private void findWorkerByLogin(String login){
         try{
             String sqlQuery = "SELECT w.id_worker, w.superadmin FROM worker w JOIN administration_panel a ON w.id_log=a.id_log WHERE a.login = ?";
@@ -186,6 +207,9 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    /**
+     * Prepares and shows form for creating new customer account
+     */
     public void createNewAccount() {
         try {
             Stage newCustomerStage = new Stage();
@@ -203,6 +227,10 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Searches ID of customer by written email
+     * @param email
+     */
     private int findIDByEmail(String email){
         PreparedStatement preparedStatement = null;
         String sqlQuery = "SELECT cl.id_client FROM Client cl, Contact co WHERE co.email = ? AND co.id_contact = cl.id_contact";

@@ -6,11 +6,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Represents contact
+ */
 public class Contact {
     private int id_contact;
     private int phone_number;
     private String email;
 
+    /**
+     * Creates contact
+     * @param id_client
+     */
     Contact(int id_client) {
         try{
             ResultSet result = GetContactFromDatabase(id_client);
@@ -26,7 +33,11 @@ public class Contact {
         }
 
     }
-
+    /**
+     * Gets record from database, which represent Contact
+     * @param id_client
+     * @return ResultSet set of data which is return from database
+     */
     private ResultSet GetContactFromDatabase(int id_client){
         System.out.println("Contact - GetContactFromDatabase");
         PreparedStatement preparedStatement = null;
@@ -54,14 +65,26 @@ public class Contact {
         return null;
     }
 
+    /**
+     *
+     * @return id of contact
+     */
     public int getId_contact() {
         return id_contact;
     }
 
+    /**
+     *
+     * @return phone number
+     */
     public int getPhone_number() {
         return phone_number;
     }
 
+    /**
+     *
+     * @return email
+     */
     public String getEmail() {
         return email;
     }

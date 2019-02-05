@@ -2,7 +2,6 @@ package Customer;
 
 import NewCustomer.CheckingFormulas;
 import Product.*;
-import com.sun.xml.internal.ws.spi.db.DatabindingException;
 import connectors.Close;
 import connectors.Database;
 import javafx.application.Platform;
@@ -18,12 +17,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+/**
+ * Represents controller for customer's part of application
+ */
 public class CustomerController implements Initializable {
     static public int id; // id_client
     static public int id_cart; // id_cart
@@ -130,6 +130,7 @@ public class CustomerController implements Initializable {
 
 
 // --------------------------- GENERAL --------------------------------------------
+    @Override
     public void initialize(URL url, ResourceBundle rb){
         CustomerController.id_cart = -1;
         if(id == -1){
@@ -170,7 +171,7 @@ public class CustomerController implements Initializable {
         productTypeComboBox.getSelectionModel().selectFirst();
         productTypeComboBox.setOnAction((event -> {
             String selected = productTypeComboBox.getSelectionModel().getSelectedItem();
-            System.out.println("GeneralProduct type combo box = wybrano : "+selected);
+            //System.out.println("GeneralProduct type combo box = wybrano : "+selected);
         }));
         // adding data to product table
         fillProductTable();
@@ -193,7 +194,7 @@ public class CustomerController implements Initializable {
             });
         });
 
-        System.out.println("Initialize - id cart = "+id_cart);
+        //System.out.println("Initialize - id cart = "+id_cart);
     }
 
 
@@ -201,6 +202,11 @@ public class CustomerController implements Initializable {
 
 
 // -------------------------------------- CATALOG -------------------------------------
+
+    /**
+     * Downloads data about products from database
+     * @return ObservableList which represents list of products
+     */
     private ObservableList<String> makeProductTypeData(){
         ObservableList<String> data = FXCollections.observableArrayList();
 
@@ -221,7 +227,9 @@ public class CustomerController implements Initializable {
         return null;
     }
 
-
+    /**
+     * Modifies SQL query by customer choices
+     */
     private void fillProductTable(){
 
         //String sqlQuery = "SELECT p.product_name, p.id_product, t.type_name, p.price, p.quantity_store FROM product p JOIN product_type t ON p.id_type = t.id_type";
@@ -255,7 +263,10 @@ public class CustomerController implements Initializable {
         showProductTable(sqlQuery);
     }
 
-
+    /**
+     * Displays table of products
+     * @param sqlQuery request about products to database
+     */
     public void showProductTable(String sqlQuery){
         System.out.println(sqlQuery);
         try{
@@ -279,12 +290,17 @@ public class CustomerController implements Initializable {
         }
     }
 
-
-    public void ProductFilter(){
+    /**
+     * Loads chosen filters options
+     */
+    public void productFilter(){
         productTable.getItems().clear();
         fillProductTable();
     }
 
+    /**
+     * reset to default set of filters
+     */
     public void clearFilters(){
         productTypeComboBox.getSelectionModel().selectFirst();
         isAvailableCheckBox.setSelected(false);
@@ -293,6 +309,9 @@ public class CustomerController implements Initializable {
         fillProductTable();
     }
 
+    /**
+     * Searches product by ID
+     */
     public void searchByID(){
         String errorInfo = null;
         System.out.println(idField.getText());
@@ -320,6 +339,9 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Shows description of product in new window
+     */
     public void showDescription(){
         try {
 
@@ -362,6 +384,9 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * adds chosen product ( considers quantity ) to shopping cart
+     */
     public void addToCart(){
         System.out.println("CART ----------- = "+CustomerController.id_cart);
         try {
@@ -466,6 +491,9 @@ public class CustomerController implements Initializable {
 
 // ------------------------------- CART ------------------------------------
 
+    /**
+     * Prepares SQL query
+     */
     private void fillCartTable(){
 
         String sqlQuery = "SELECT * FROM cartview c WHERE c.id_client = ?";
@@ -473,6 +501,10 @@ public class CustomerController implements Initializable {
         showCartTable(sqlQuery);
     }
 
+    /**
+     * Displays current shopping cart
+     * @param sqlQuery
+     */
     public void showCartTable(String sqlQuery){
         boolean isCartSet = false;
         try{
@@ -501,6 +533,9 @@ public class CustomerController implements Initializable {
         computeCartPrice();
     }
 
+    /**
+     * Removes chosen product from shopping cart
+     */
     public void removeFromCart(){
         if (cartTable.getSelectionModel().getSelectedItem() != null) {
             int id = cartTable.getSelectionModel().getSelectedItem().getId_product();
@@ -528,7 +563,9 @@ public class CustomerController implements Initializable {
         }
     }
 
-
+    /**
+     * Deletes all items from current cart
+     */
     public void clearCart(){
         String sqlQuery = "DELETE FROM product_list p WHERE p.id_cart=? ";
 
@@ -548,7 +585,9 @@ public class CustomerController implements Initializable {
         }
     }
 
-
+    /**
+     * Computes current price of cart
+     */
     private void computeCartPrice() {
         try {
 
@@ -577,6 +616,13 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Places order from current shopping cart
+     * 1) Checks quantity of products in store
+     * 2) Updates status of cart to 'ordered'
+     * 3) Makes new Transcation
+     * 4) Updates quantity of products in store
+     */
     public void makeOrder(){
 
         try {
@@ -589,7 +635,7 @@ public class CustomerController implements Initializable {
             ResultSet resultSet = preparedStatement0.executeQuery();
             System.out.println("id cart w makeorder = "+CustomerController.id_cart);
             while(resultSet.next()){
-                System.out.println("make order - sprawdzenie ilosci w koszyky i magazynie");
+                System.out.println("make order - sprawdzenie ilosci w koszyku i magazynie");
                 if(resultSet.getInt(3) > resultSet.getInt(4))
                     throw new Exception();
             }
@@ -655,13 +701,19 @@ public class CustomerController implements Initializable {
 
 
 // ----------------------------------- ORDERS ---------------------------------
-
+    /**
+     * Prepares SQL query
+     */
     public void fillOrderTable(){
         String sqlQuery = "SELECT * FROM orderview o WHERE o.id_client = ?";
 
         showOrderTable(sqlQuery);
     }
 
+    /**
+     * Displays table of orders
+     * @param sqlQuery
+     */
     private void showOrderTable(String sqlQuery) {
         try {
 
@@ -688,6 +740,9 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * Displays description of chosen order
+     */
     public void showOrderDescription(){
         try {
 
@@ -717,6 +772,10 @@ public class CustomerController implements Initializable {
 
 
 // ---------------------------- USER ---------------------------------------------------
+
+    /**
+     * Displays informations of current user
+     */
     private void showUserInformation(){
         firstNameLabel.setText(this.customer.client.getFirstName());
         lastNameLabel.setText(this.customer.client.getLastName());

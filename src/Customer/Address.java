@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Represents address
+ */
 public class Address {
     private int id_address;
     private String street_address;
@@ -15,6 +18,11 @@ public class Address {
     private String city;
     private String country;
 
+    /**
+     * Creates address with specified data
+     * @param id_address
+     * @throws SQLException
+     */
     Address(int id_address) throws SQLException{
         try {
             ResultSet result = GetAddressFromDatabase(id_address);
@@ -31,6 +39,12 @@ public class Address {
         }
     }
 
+    /**
+     * Gets record from database, which represent Address
+     * @param id_address
+     * @return ResultSet set of data which is return from database
+     * @throws SQLException
+     */
     private ResultSet GetAddressFromDatabase(int id_address) throws SQLException{
 
         PreparedStatement preparedStatement = null;
@@ -57,22 +71,42 @@ public class Address {
         }
     }
 
+    /**
+     *
+     * @return street address
+     */
     public String getStreet_address() {
         return street_address;
     }
 
+    /**
+     *
+     * @return apartment address
+     */
     public String getApartment() {
         return apartment;
     }
 
+    /**
+     *
+     * @return zip code
+     */
     public int getZip_code() {
         return zip_code;
     }
 
+    /**
+     *
+     * @return city
+     */
     public String getCity() {
         return city;
     }
 
+    /**
+     *
+     * @return country
+     */
     public String getCountry() {
         return country;
     }

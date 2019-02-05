@@ -2,12 +2,20 @@ package Customer;
 
 import java.sql.SQLException;
 
+/**
+ * Represents customer of store and include:
+ * client, address, contact
+ */
 public class Customer {
 
     Client client;
     Address address;
     Contact contact;
 
+    /**
+     * Creates customer
+     * @param id_client
+     */
     Customer(int id_client){
         try{
             //make contact by id_contact

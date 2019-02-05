@@ -4,10 +4,17 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Represents connecting application to database
+ */
 public class Database{
 
 	public static Connection connection;
 
+	/**
+	 * Connecting to database by stationary data like:
+	 * driver, user, password and absolute URL address to database
+	 */
 	public static void connectToDatabase(){
 
 		final String driverName = "org.postgresql.Driver";
@@ -26,7 +33,9 @@ public class Database{
 
 	}
 
-
+	/**
+	 * Closing connection to database
+	 */
 	public static void close(){
 		try {
 			if (connection != null && !connection.isClosed()) {
@@ -42,6 +51,9 @@ public class Database{
 		
 	}
 
+	/**
+	 * setting off AutoCommit mod
+	 */
 	public static void setAutoCommitTrue(){
 		try{
 			Database.connection.setAutoCommit(true);

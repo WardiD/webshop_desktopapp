@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Represents client
+ */
 public class Client {
     private int id_client;
     private String firstName;
@@ -14,7 +17,11 @@ public class Client {
     private String password;
     private double money;
 
-
+    /**
+     * Creates client
+     * @param id_client
+     * @throws SQLException
+     */
     Client(int id_client) throws SQLException{
         try {
             ResultSet result = GetClientFromDatabase(id_client);
@@ -30,6 +37,12 @@ public class Client {
         }
     }
 
+    /**
+     * Gets record from database, which represent Client
+     * @param id_client
+     * @return ResultSet set of data which is return from database
+     * @throws SQLException
+     */
     private ResultSet GetClientFromDatabase(int id_client) throws SQLException{
 
         PreparedStatement preparedStatement = null;
@@ -55,19 +68,34 @@ public class Client {
         }
     }
 
-
+    /**
+     *
+     * @return first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     *
+     * @return last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     *
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * It can represents amount of money which may you spent in store
+     * @return money value
+     */
     public double getMoney() {
         return money;
     }

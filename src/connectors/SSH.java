@@ -16,12 +16,12 @@ public class SSH{
      * Represent connecting to server by SSH with stationary data like hosts, ports, user and password
      */
 	public static void connectSSH(){
-        final String rhost = "pascal.fis.agh.edu.pl";
-        final String host= "pascal.fis.agh.edu.pl";
+        final String rhost = "SERVER";
+        final String host= "SERVER";
         final int lport = 5432; // local port
         final int rport = 5432; //remote port
-        final String sshUser = "5wardega";
-        final String sshPassword = "entumblendsd";
+        final String sshUser = "USERNAME";
+        final String sshPassword = "PASSWORDs";
 
         try{
             //Set StrictHostKeyChecking property to no to avoid UnknownHostKey issue

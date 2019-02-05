@@ -19,9 +19,9 @@ public class Database{
 
 		final String driverName = "org.postgresql.Driver";
 		final int lport = 5432;
-		final String url = "jdbc:postgresql://localhost:"+lport+"/u5wardega";
-		final String databaseUserName = "u5wardega";
-		final String databasePassword = "5wardega";
+		final String url = "jdbc:postgresql://localhost:"+lport+"/DB_USER";
+		final String databaseUserName = "DB_USERNAME";
+		final String databasePassword = "DB_PASSWORD";
 
 		try{
 			Class.forName(driverName).newInstance();

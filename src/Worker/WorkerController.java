@@ -1,6 +1,5 @@
 package Worker;
 
-import Customer.CustomerController;
 import Product.Transaction;
 import connectors.Close;
 import connectors.Database;
@@ -102,6 +101,7 @@ public class WorkerController implements Initializable {
         orderPlacedDateColumn.setCellValueFactory(new PropertyValueFactory<>("placedDate"));
         orderRealizationDateColumn.setCellValueFactory(new PropertyValueFactory<>("realizationDate"));
         orderPriceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
         /*
         orderTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             System.out.println("GET status - poczatke");
@@ -117,6 +117,10 @@ public class WorkerController implements Initializable {
         // New product
         productTypeComboBox.setItems(makeProductTypeData());
         productTypeComboBox.getSelectionModel().selectFirst();
+
+        //disable items responsible for adding new products
+        productTypeComboBox.setDisable(true);
+        addProductButton.setDisable(true);
 
         // onCloseRequest
         ap.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -353,9 +357,6 @@ public class WorkerController implements Initializable {
         data.add("Mobile");
         return data;
     }
-
-
-
 
 
 

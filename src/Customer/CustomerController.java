@@ -503,7 +503,7 @@ public class CustomerController implements Initializable {
 
     /**
      * Displays current shopping cart
-     * @param sqlQuery
+     * @param sqlQuery SQL query for database operation
      */
     public void showCartTable(String sqlQuery){
         boolean isCartSet = false;
@@ -712,7 +712,7 @@ public class CustomerController implements Initializable {
 
     /**
      * Displays table of orders
-     * @param sqlQuery
+     * @param sqlQuery SQL query for database operation
      */
     private void showOrderTable(String sqlQuery) {
         try {

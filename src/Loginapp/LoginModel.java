@@ -12,12 +12,11 @@ import connectors.Database;
 public class LoginModel {
     /**
      * checks customer exists
-     * @param email
-     * @param password
+     * @param email email of customer
+     * @param password password of customer
      * @return true where input data is correct
-     * @throws Exception
      */
-    public boolean isLoginCustomer(String email, String password) throws Exception{
+    public boolean isLoginCustomer(String email, String password){
         System.out.println("isLoginCustomer - email: "+email+", passwd: "+password);
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
@@ -39,22 +38,25 @@ public class LoginModel {
         } catch (SQLException ex){
             System.out.println(" isLoginCustomer = false ( EXCEPTION )");
             ex.printStackTrace();
-            return false;
         }
         finally {
-            preparedStatement.close();
-            result.close();
+            try{
+                preparedStatement.close();
+                result.close();
+            } catch ( NullPointerException | SQLException ex){
+                ex.printStackTrace();
+            }
         }
+        return false;
     }
 
     /**
      * Checks worker exists
-     * @param user
-     * @param password
+     * @param user login of worker
+     * @param password password of worker
      * @return true where input data is correct
-     * @throws Exception
      */
-    public boolean isLoginWorker(String user, String password) throws Exception{
+    public boolean isLoginWorker(String user, String password){
         PreparedStatement preparedStatement = null;
         ResultSet result = null;
         System.out.println("isLoginWorker - user: "+user+", passwd: "+password);
@@ -76,12 +78,16 @@ public class LoginModel {
         } catch (SQLException ex){
             System.out.println(" isLoginWorker = false ( EXCEPTION )");
             ex.printStackTrace();
-            return false;
         }
         finally {
-            preparedStatement.close();
-            result.close();
+            try {
+                preparedStatement.close();
+                result.close();
+            }  catch ( NullPointerException | SQLException ex){
+                ex.printStackTrace();
+            }
         }
+        return false;
     }
 
 }

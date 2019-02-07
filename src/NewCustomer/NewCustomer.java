@@ -4,6 +4,9 @@ import connectors.Database;
 
 import java.sql.*;
 
+/**
+ * Represents new customer ( from form )
+ */
 public class NewCustomer {
     // Client components
     String firstName;
@@ -25,7 +28,22 @@ public class NewCustomer {
     boolean isApartmentEmpty;
     boolean isPhoneNumberEmpty;
 
-
+    /**
+     * Creates new customer ( from form )
+     * @param firstName first name of new customer
+     * @param lastName last name of new customer
+     * @param password password of new customer
+     * @param wallet amount of money of new customer
+     * @param email email of new customer
+     * @param phoneNumber phone number of new customer
+     * @param streetAddress street address of new customer
+     * @param apartment apartment of new customer
+     * @param city city of new customer
+     * @param country country of new customer
+     * @param zipCode ZIP code of new customer
+     * @param isApartmentEmpty boolean value about emptiness of apartment field
+     * @param isPhoneNumberEmpty boolean value about emptiness of phone number field
+     */
     public NewCustomer(String firstName, String lastName, String password, double wallet, String email, int phoneNumber,
                        String streetAddress, String apartment, String city, String country, int zipCode,
                        boolean isApartmentEmpty, boolean isPhoneNumberEmpty) {
@@ -62,7 +80,10 @@ public class NewCustomer {
         return string;
     }
 
-
+    /**
+     * Adds new customer to database
+     * @return true when customer is added correctly
+     */
     public boolean addCustomerToDatabase() {
         try{
             Database.connection.setAutoCommit(false);
@@ -91,15 +112,17 @@ public class NewCustomer {
                 Database.connection.rollback();
                 return false;
             }
-        }catch ( NullPointerException ex) {
-            ex.printStackTrace();
-        } catch (SQLException ex){
+        }catch ( NullPointerException | SQLException ex) {
             ex.printStackTrace();
         }
         Database.setAutoCommitTrue();
         return false;
     }
 
+    /**
+     * Prepares SQL query for adding new record to Client table in database
+     * @return PreparedStatement
+     */
     private PreparedStatement prepareNewClientQuery(){
         PreparedStatement preparedStatement = null;
         String sqlQuery = "INSERT INTO Client (id_address, id_contact, first_name, last_name, password, money) ";
@@ -119,6 +142,10 @@ public class NewCustomer {
         return null;
     }
 
+    /**
+     * Prepares SQL query for adding new record to Client table in database
+     * @return PreparedStatement
+     */
     private PreparedStatement prepareNewContactQuery() {
         PreparedStatement preparedStatement = null;
         String sqlQuery = "INSERT INTO Contact (email,phone_number) VALUES (?,?)";
@@ -137,6 +164,11 @@ public class NewCustomer {
     }
 
     //returns id_contact
+
+    /**
+     * Adds new record to Contact table in database
+     * @return int id_contact
+     */
     private int addContactToDatabase(){
         PreparedStatement preparedStatement = prepareNewContactQuery();
         try {
@@ -155,7 +187,10 @@ public class NewCustomer {
         }
         return -1;
     }
-
+    /**
+     * Prepares SQL query for adding new record to Address table in database
+     * @return PreparedStatement
+     */
     private PreparedStatement prepareNewAddressQuery() {
         PreparedStatement preparedStatement = null;
         String sqlQuery = "INSERT INTO Address ";
@@ -178,6 +213,10 @@ public class NewCustomer {
     }
 
     //returns id_address
+    /**
+     * Adds new record to Address table in database
+     * @return int id_address
+     */
     private int addAddressToDatabase(){
         PreparedStatement preparedStatement = prepareNewAddressQuery();
         try{

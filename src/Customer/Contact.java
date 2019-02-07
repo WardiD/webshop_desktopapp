@@ -16,7 +16,7 @@ public class Contact {
 
     /**
      * Creates contact
-     * @param id_client
+     * @param id_client ID of client in database
      */
     Contact(int id_client) {
         try{
@@ -35,7 +35,7 @@ public class Contact {
     }
     /**
      * Gets record from database, which represent Contact
-     * @param id_client
+     * @param id_client ID of client in database
      * @return ResultSet set of data which is return from database
      */
     private ResultSet GetContactFromDatabase(int id_client){

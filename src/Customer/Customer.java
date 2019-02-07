@@ -1,7 +1,5 @@
 package Customer;
 
-import java.sql.SQLException;
-
 /**
  * Represents customer of store and include:
  * client, address, contact
@@ -14,10 +12,9 @@ public class Customer {
 
     /**
      * Creates customer
-     * @param id_client
+     * @param id_client ID of client in database
      */
     Customer(int id_client){
-        try{
             //make contact by id_contact
             contact = new Contact(id_client);
             // make address by id_client
@@ -26,13 +23,6 @@ public class Customer {
             client = new Client(id_client);
             System.out.println("Customer created!");
             System.out.println("----------------");
-        } catch (SQLException ex){
-            ex.getMessage();
-            ex.printStackTrace();
-        }
-
-
-
     }
 
 }

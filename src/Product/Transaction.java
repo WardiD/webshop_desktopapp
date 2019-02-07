@@ -2,6 +2,9 @@ package Product;
 
 import java.util.Date;
 
+/**
+ * Represents transactions / orders  in shop
+ */
 public class Transaction {
     private int id;
     private String workerName;
@@ -11,6 +14,16 @@ public class Transaction {
     private double price;
     private int id_cart;
 
+    /**
+     * Creates transaction
+     * @param id ID of transaction in database
+     * @param workerName employee responsible for a given transaction
+     * @param status status of transaction
+     * @param placedDate date when order is placed
+     * @param realizationDate date when order is shipped
+     * @param price price of transaction
+     * @param id_cart ID of cart with products from this order
+     */
     public Transaction(int id, String workerName, String status, Date placedDate, Date realizationDate, double price, int id_cart) {
         this.id = id;
         this.workerName = workerName;

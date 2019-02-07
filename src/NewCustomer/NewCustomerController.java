@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Represents controller for new customer's part of application
+ */
 public class NewCustomerController implements Initializable {
     String warningStatement = new String();
     NewCustomer newAccount;
@@ -52,6 +54,7 @@ public class NewCustomerController implements Initializable {
     @FXML
     private Button clearButton;
 
+    @Override
     public void initialize(URL url, ResourceBundle rb){
         tipsLabel.setText("TIPS: \n* fields are obligatory! \nPassword :\nmin - 4 chars, max - 16 chars,\n" +
                 "must consists of digits and letters\n");
@@ -69,6 +72,11 @@ public class NewCustomerController implements Initializable {
 
 
 // CHECKING FORM
+
+    /**
+     * Checks first name is written correctly
+     * @return true if it's correct
+     */
     private boolean checkFirstName(){
         if(this.firstNameField.getText().isEmpty()){
             warningStatement +="First name's field is empty!\n";
@@ -96,7 +104,10 @@ public class NewCustomerController implements Initializable {
             firstNameField.setText("");
         return checkedCorrectly;
     }
-
+    /**
+     * Checks last name is written correctly
+     * @return true if it's correct
+     */
     private boolean checkLastName(){
         if(this.lastNameField.getText().isEmpty()){
             warningStatement +="Last name's field is empty!\n";
@@ -125,6 +136,10 @@ public class NewCustomerController implements Initializable {
         return checkedCorrectly;
     }
 
+    /**
+     * Firstly checks password is written correctly, then checks repeated password is same as first one
+     * @return true if both passwords are correct and the same
+     */
     private boolean checkPassword(){
         if(this.passwordField.getText().isEmpty()){
             warningStatement +="Password's field is empty!\n";
@@ -170,7 +185,10 @@ public class NewCustomerController implements Initializable {
         }
         return checkedCorrectly;
     }
-
+    /**
+     * Checks email is written correctly
+     * @return true if it's correct
+     */
     private boolean checkEmail(){
         if(this.emailField.getText().isEmpty()){
             warningStatement +="Email address' field is empty!\n";
@@ -194,7 +212,10 @@ public class NewCustomerController implements Initializable {
             emailField.setText("");
         return checkedCorrectly;
     }
-
+    /**
+     * Checks phone number is written correctly or field is empty
+     * @return true if it's correct
+     */
     private boolean checkPhoneNumber(){
         if(this.phoneNumberField.getText().isEmpty())
             return true;
@@ -216,7 +237,10 @@ public class NewCustomerController implements Initializable {
             phoneNumberField.setText("");
         return checkedCorrectly;
     }
-
+    /**
+     * Checks street address is written correctly
+     * @return true if it's correct
+     */
     private boolean checkStreetAddress(){
         if(this.streetAddressField.getText().isEmpty()){
             warningStatement +="Street address' field is empty!\n";
@@ -240,6 +264,11 @@ public class NewCustomerController implements Initializable {
     //Apartment can be represented by many ways:
     // numbers, numbers + letters, only letters etc
     // so it can be leave by another checkings for this moment
+    /**
+     * Checks apartment address is written correctly ( is not empty )
+     * each format of apartment address allowed
+     * @return true if it's correct
+     */
     private boolean checkApartment(){
         if(this.apartmentField.getText().isEmpty())
             return true;
@@ -255,7 +284,10 @@ public class NewCustomerController implements Initializable {
         return checkedCorrectly;
         */
     }
-
+    /**
+     * Checks ZIP code is written correctly
+     * @return true if it's correct
+     */
     private boolean checkZipCode(){
         if(this.zipCodeField.getText().isEmpty()){
             warningStatement +="ZIP Code's field is empty!\n";
@@ -280,7 +312,10 @@ public class NewCustomerController implements Initializable {
             zipCodeField.setText("");
         return checkedCorrectly;
     }
-
+    /**
+     * Checks city is written correctly
+     * @return true if it's correct
+     */
     private boolean checkCity(){
         if(this.cityField.getText().isEmpty()){
             warningStatement +="City's field is empty!\n";
@@ -299,7 +334,10 @@ public class NewCustomerController implements Initializable {
             cityField.setText("");
         return checkedCorrectly;
     }
-
+    /**
+     * Checks country is written correctly
+     * @return true if it's correct
+     */
     private boolean checkCountry(){
         if(this.countryField.getText().isEmpty()){
             warningStatement +="Country's field is empty!\n";
@@ -318,7 +356,10 @@ public class NewCustomerController implements Initializable {
             countryField.setText("");
         return checkedCorrectly;
     }
-
+    /**
+     * Checks that declaration of amount of money is written correctly
+     * @return true if it's correct
+     */
     private boolean checkMoney(){
         if(this.moneyField.getText().isEmpty()){
             warningStatement +="Money's field is empty!\n";
@@ -346,6 +387,10 @@ public class NewCustomerController implements Initializable {
         return checkedCorrectly;
     }
 
+    /**
+     * Checks form is completed correctly
+     * @return true, when each field is correct
+     */
     private boolean checkForm(){
         boolean isFormCorrect = false;
         isFormCorrect = checkFirstName();
@@ -366,8 +411,11 @@ public class NewCustomerController implements Initializable {
     }
 
 
-    @FXML
-    public void createCustomer(){
+
+    /**
+     * creates instance of new customer from input data from form and add the same customer to database
+     */
+    @FXML public void createCustomer(){
         warningStatement = new String();
         //System.out.println("is correct? "+checkForm());
         if(checkForm()) {
@@ -409,8 +457,11 @@ public class NewCustomerController implements Initializable {
         }
     }
 
-    @FXML
-    public void clearForm(){
+
+    /**
+     * Sets each field empty
+     */
+    @FXML public void clearForm(){
         firstNameField.setText("");
         lastNameField.setText("");
         passwordField.setText("");

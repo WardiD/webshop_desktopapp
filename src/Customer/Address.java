@@ -20,10 +20,9 @@ public class Address {
 
     /**
      * Creates address with specified data
-     * @param id_address
-     * @throws SQLException
+     * @param id_address ID of address in database
      */
-    Address(int id_address) throws SQLException{
+    Address(int id_address){
         try {
             ResultSet result = GetAddressFromDatabase(id_address);
             this.id_address = result.getInt(1);
@@ -35,17 +34,16 @@ public class Address {
 
             System.out.println("Address constructed :\nid address = "+this.id_address);
         } catch (SQLException ex){
-            throw ex;
+            ex.printStackTrace();
         }
     }
 
     /**
      * Gets record from database, which represent Address
-     * @param id_address
+     * @param id_address ID of address in database
      * @return ResultSet set of data which is return from database
-     * @throws SQLException
      */
-    private ResultSet GetAddressFromDatabase(int id_address) throws SQLException{
+    private ResultSet GetAddressFromDatabase(int id_address){
 
         PreparedStatement preparedStatement = null;
 
@@ -67,8 +65,9 @@ public class Address {
             System.out.println("Contact - GetContactFromDatabase - something goes wrong!");
             return null;
         } catch (SQLException ex){
-            throw new SQLException("Problem in getting data from database from CONTACT table");
+           ex.printStackTrace();
         }
+        return null;
     }
 
     /**

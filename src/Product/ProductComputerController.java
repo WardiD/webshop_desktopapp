@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Represents controller of part of application :
+ * description of products of general type : computer
+ */
 public class ProductComputerController implements Initializable {
 
     public static int id_product;
@@ -52,6 +56,9 @@ public class ProductComputerController implements Initializable {
         showDescription();
     }
 
+    /**
+     * displays description of product
+     */
     public void showDescription(){
         String sqlQuery = "SELECT * FROM computerproductview d WHERE d.id_product = ?";
         try{
@@ -80,12 +87,6 @@ public class ProductComputerController implements Initializable {
                         Integer.toString(result.getInt(15))+"x"+result.getInt(16));
                 computerPriceLabel.setText(Double.toString(result.getDouble(17)));
             }
-
-
-
-
-
-
         } catch (SQLException ex){
             ex.printStackTrace();
         }

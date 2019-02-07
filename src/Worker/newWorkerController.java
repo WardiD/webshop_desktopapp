@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Represents controller of new worker part of application
+ */
 public class newWorkerController {
 
     @FXML
@@ -37,6 +40,9 @@ public class newWorkerController {
 
     private String message;
 
+    /**
+     * Checks that form is completed correctly
+     */
     public void newWorker(){
         if(checkForm()){
             System.out.println("after check form");
@@ -51,6 +57,10 @@ public class newWorkerController {
         }
     }
 
+    /**
+     * Checks form is completed correctly
+     *  @return true, when each field is correct
+     */
     private boolean checkForm(){
         message = "";
         boolean isFormCorrect = false;
@@ -64,6 +74,9 @@ public class newWorkerController {
         return isFormCorrect;
     }
 
+    /**
+     * Adds new worker to database
+     */
     private void addWorkerToDatabase(){
         try {
             Database.connection.setAutoCommit(false);
@@ -105,6 +118,10 @@ public class newWorkerController {
         Database.setAutoCommitTrue();
     }
 
+    /**
+     * Adds new login to administration panel
+     * @return ID of login record from database
+     */
     private int addLogin(){
         try{
 
@@ -127,6 +144,11 @@ public class newWorkerController {
     }
 
     //CHECKING
+
+    /**
+     * Checks first name is written correctly
+     * @return true if it's correct
+     */
     private boolean checkFirstName(){
         if(firstNameField.getText().isEmpty()){
             message +="First name's field is empty!\n";
@@ -155,7 +177,10 @@ public class newWorkerController {
         return checkedCorrectly;
     }
 
-
+    /**
+     * Checks last name is written correctly
+     * @return true if it's correct
+     */
     private boolean checkLastName(){
         if(lastNameField.getText().isEmpty()){
             message +="Last name's field is empty!\n";
@@ -184,7 +209,10 @@ public class newWorkerController {
         return checkedCorrectly;
     }
 
-
+    /**
+     * Firstly checks password is written correctly, then checks repeated password is same as first one
+     * @return true if both passwords are correct and the same
+     */
     private boolean checkPassword(){
         if(passwordField.getText().isEmpty()){
             message +="Password's field is empty!\n";
@@ -231,7 +259,10 @@ public class newWorkerController {
         return checkedCorrectly;
     }
 
-
+    /**
+     * Checks email is written correctly
+     * @return true if it's correct
+     */
     private boolean checkEmail(){
         if(this.emailField.getText().isEmpty()){
             message +="Email address' field is empty!\n";
@@ -256,7 +287,10 @@ public class newWorkerController {
         return checkedCorrectly;
     }
 
-
+    /**
+     * Checks phone number is written correctly
+     * @return true if it's correct
+     */
     private boolean checkPhoneNumber(){
         if(this.phoneField.getText().isEmpty()){
             message +="Phone number's field is empty!\n";
@@ -281,7 +315,10 @@ public class newWorkerController {
         return checkedCorrectly;
     }
 
-
+    /**
+     * Checks login is written correctly
+     * @return true if it's correct
+     */
     private boolean checkLogin(){
         if(loginField.getText().isEmpty()){
             message +="Login's field is empty!\n";

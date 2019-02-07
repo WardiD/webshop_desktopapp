@@ -19,10 +19,9 @@ public class Client {
 
     /**
      * Creates client
-     * @param id_client
-     * @throws SQLException
+     * @param id_client ID of client in database
      */
-    Client(int id_client) throws SQLException{
+    Client(int id_client){
         try {
             ResultSet result = GetClientFromDatabase(id_client);
             this.id_client = result.getInt(1);
@@ -33,17 +32,16 @@ public class Client {
 
             System.out.println("Client constructed :\nid client = " + this.id_client);
         } catch (SQLException ex){
-            throw ex;
+            ex.printStackTrace();
         }
     }
 
     /**
      * Gets record from database, which represent Client
-     * @param id_client
+     * @param id_client ID of client id database
      * @return ResultSet set of data which is return from database
-     * @throws SQLException
      */
-    private ResultSet GetClientFromDatabase(int id_client) throws SQLException{
+    private ResultSet GetClientFromDatabase(int id_client){
 
         PreparedStatement preparedStatement = null;
 
@@ -64,8 +62,9 @@ public class Client {
             System.out.println("Contact - GetContactFromDatabase - something goes wrong!");
             return null;
         } catch (SQLException ex){
-            throw new SQLException("Problem in getting data from database from CONTACT table");
+            ex.printStackTrace();
         }
+        return null;
     }
 
     /**

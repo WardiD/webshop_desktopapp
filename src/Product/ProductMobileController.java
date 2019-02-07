@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Represents controller of part of application :
+ * description of products of general type : mobile
+ */
 public class ProductMobileController implements Initializable {
     public static int id_product;
 
@@ -58,7 +62,9 @@ public class ProductMobileController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){
         showDescription();
     }
-
+    /**
+     * displays description of product
+     */
     public void showDescription(){
         String sqlQuery = "SELECT * FROM mobileproductview d WHERE d.id_product = ?";
         try{

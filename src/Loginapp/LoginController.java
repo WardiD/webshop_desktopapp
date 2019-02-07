@@ -185,7 +185,7 @@ public class LoginController implements Initializable {
 
     /**
      * Searches ID of workers by written login
-     * @param login
+     * @param login login of worker
      */
     private void findWorkerByLogin(String login){
         try{
@@ -229,7 +229,7 @@ public class LoginController implements Initializable {
 
     /**
      * Searches ID of customer by written email
-     * @param email
+     * @param email email of customer
      */
     private int findIDByEmail(String email){
         PreparedStatement preparedStatement = null;

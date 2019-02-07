@@ -24,6 +24,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Represents controller for worker's part of application
+ */
 public class WorkerController implements Initializable {
     static public int id_worker;
     static public boolean superAdmin;
@@ -137,6 +140,11 @@ public class WorkerController implements Initializable {
 
 
     // --- Customer contact list
+
+    /**
+     * Prepares list of customers
+     * @return ObservableList contains customer contact's data
+     */
     private ObservableList<String> makeCustomerContactsData(){
         ObservableList<String> data = FXCollections.observableArrayList();
 
@@ -161,6 +169,9 @@ public class WorkerController implements Initializable {
     }
 
     // --- Workers table
+    /**
+     * Prepares SQL query for getting records about workers from database
+     */
     public void fillWorkerTable(){
         workerTable.getItems().clear();
 
@@ -169,6 +180,10 @@ public class WorkerController implements Initializable {
         showWorkerTable(sqlQuery);
     }
 
+    /**
+     * Displays data about workers from database
+     * @param sqlQuery SQL query about workers
+     */
     private void showWorkerTable(String sqlQuery) {
         try {
 
@@ -192,7 +207,9 @@ public class WorkerController implements Initializable {
         }
     }
 
-
+    /**
+     * Removes worker from database
+     */
     public void removeWorker(){
         if(workerTable.getSelectionModel().getSelectedItem().isSuperAdmin()){
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -238,7 +255,9 @@ public class WorkerController implements Initializable {
         fillWorkerTable();
     }
 
-
+    /**
+     * Add new worker to database
+     */
     public void addNewWorker(){
         try{
             Stage newWorkerStage = new Stage();
@@ -262,12 +281,19 @@ public class WorkerController implements Initializable {
 
     }
 
+    /**
+     * Refreshes table with worker's data
+     */
     public void refreshWorkerList(){
         fillWorkerTable();
     }
 
 
     // --- Orders table
+    /**
+     * Prepares list of orders
+     * @return ObservableList contains order's data
+     */
     private ObservableList<String> makeOrderTypeData(){
         ObservableList<String> data = FXCollections.observableArrayList();
 
@@ -287,7 +313,9 @@ public class WorkerController implements Initializable {
         }
         return null;
     }
-
+    /**
+     * Prepares SQL query for getting records about orders from database
+     */
     public void fillOrderTable(){
         String sqlQuery = "SELECT * FROM orderview o";
 
@@ -298,7 +326,10 @@ public class WorkerController implements Initializable {
         System.out.println(sqlQuery);
         showOrderTable(sqlQuery);
     }
-
+    /**
+     * Displays data about orders from database
+     * @param sqlQuery SQL query about orders
+     */
     private void showOrderTable(String sqlQuery) {
         try {
 
@@ -324,6 +355,9 @@ public class WorkerController implements Initializable {
         }
     }
 
+    /**
+     * Sets next step of transaction for selected order
+     */
     public void nextStatus(){
         try{
 
@@ -351,6 +385,10 @@ public class WorkerController implements Initializable {
     }
 
     // --- New product
+    /**
+     * Prepares list of product types
+     * @return ObservableList contains product types' data
+     */
     private ObservableList<String> makeProductTypeData(){
         ObservableList<String> data = FXCollections.observableArrayList();
         data.add("Computer");

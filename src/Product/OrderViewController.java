@@ -14,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Represents view of Order
+ */
 public class OrderViewController implements Initializable {
     static private int id_cart;
     static private int id_client;
@@ -34,6 +37,7 @@ public class OrderViewController implements Initializable {
     @FXML
     private TableColumn<ShortcutProduct, Double> cartPriceColumn;
 
+    @Override
     public void initialize(URL url, ResourceBundle rb){
             fillCartTable();
             cartIDColumn.setCellValueFactory(new PropertyValueFactory<>("id_product"));
@@ -43,6 +47,9 @@ public class OrderViewController implements Initializable {
 
     }
 
+    /**
+     * Prepares SQL query for getting data about products
+     */
     private void fillCartTable(){
 
         String sqlQuery = "SELECT p.id_product,p.product_name,pl.quantity,p.price, c.id_cart, c.id_client FROM product_list pl " +
@@ -52,6 +59,10 @@ public class OrderViewController implements Initializable {
         showCartTable(sqlQuery);
     }
 
+    /**
+     * Displays product table
+     * @param sqlQuery SQL query
+     */
     public void showCartTable(String sqlQuery){
         try{
             PreparedStatement preparedStatement = Database.connection.prepareStatement(sqlQuery);

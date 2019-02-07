@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="u5wardega@pascal.fis.agh.edu.pl" uuid="0dd7eaac-31ec-4837-bdb5-010b9032a073">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://pascal.fis.agh.edu.pl:5432/u5wardega</jdbc-url>
+    </data-source>
+  </component>
+</project>
